@@ -300,6 +300,9 @@ logText("Checking User ID.")
 overlayText("`6Premium Script by `0[Rab & Rei]")
 Sleep(1000)
 
+SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_gems|1\n")
+Sleep(100)
+
 local function countReady()
     readyTree = 0
     for _, tile in pairs(GetTiles()) do
