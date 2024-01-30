@@ -12,6 +12,7 @@ currentWorld = GetWorld().name
 
 AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnSDBroadcast" then 
+        overlayText("`w[Rab Store] `4[Blocked SDB]")
         return true
     end
 end)
@@ -168,53 +169,53 @@ local function playerHook(info)
         oras = os.time() - currentTime
         local script = [[
             $webHookUrl = "]].. whUrl ..[["
-            $title = "<:rotating_light:1168024326386237470> **PTHT Information**"
+            $title = "<a:alert:1194823985628725428> **PTHT Information** <a:alert:1194823985628725428>"
             $date = [System.currentTimeZoneInfo]::ConvertcurrentTimeBySystemcurrentTimeZoneId((Get-Date), 'Singapore Standard currentTime').ToString('g')
             $cpu = (Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average).Average
             $RAM = Get-WMIObject Win32_PhysicalMemory | Measure -Property capacity -Sum | %{$_.sum/1Mb} 
             $ip = Get-NetIPAddress -AddressFamily IPv4 -InterfaceIndex $(Get-NetConnectionProfile | Select-Object -ExpandProperty InterfaceIndex) | Select-Object -ExpandProperty IPAddress
             $thumbnailObject = @{
-                url = ""
+                url = "https://cdn.discordapp.com/attachments/1193141414972899370/1198656133204811776/rs.png?ex=65c8ed04&is=65b67804&hm=26f0be87205a0f4a1af71df64258b463996e2dc38e2c4ec199d52c92df2261c9&"
             }
             $footerObject = @{
-                text = "Date: ]]..(os.date("!%A %b %d, %Y | Time: %I:%M %p ", os.time() + 8 * 60 * 60))..[[ | 4_Rab"
+                text = "Date: ]]..(os.date("!%A %b %d, %Y | Time: %I:%M %p ", os.time() + 8 * 60 * 60))..[[ | @4_rab"
             }
             
             $fieldArray = @(
 
             @{
-                name = "<:exclamation:1178874500629143677> Information"
+                name = "<:mgp:1194831769858494464> Information"
                 value = "World : **]].. currentWorld ..[[**
                 Status : **]].. info ..[[**"
                 inline = "false"
             }
 
             @{
-                name = "<:bust_in_silhouette:1178875116348768326> Player Name"
+                name = "<:bot:1201730667281666078> Player Name"
                 value = "]].. username ..[["
                 inline = "false"
             }
   
             @{
-                name = "<:gem:1178876023253778462> Total Gems"
+                name = "<:gems:1194831751193825281> Total Gems"
                 value = "Current Gems: ]].. FormatNumber(GetPlayerInfo().gems) ..[["
                 inline = "false"
             }
 
             @{
-                name = "<:gem:1178876023253778462> Previous Earned From The PTHT"
+                name = "<:gems:1194831751193825281> Previous Earned From The PTHT"
                 value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - previousGem) ..[["
                 inline = "false"
             }
 
             @{
-                name = "<:earth_asia:1182133808439500850> Ultra World Spray Stock"
+                name = "<:uws:1194831699859746867> Ultra World Spray Stock"
                 value = "Spray Stock: ]].. math.floor(findItem(12600)) ..[["
                 inline = "false"
             }
   
             @{
-                name = "<:mobile_phone:1167911073391853609> Magplant Position"
+                name = "<:mp:1194831735666511912> Magplant Position"
                 value = "Current Remote: (**]].. magplantX ..[[**, **]].. magplantY ..[[**)"
                 inline = "false"
             }
@@ -241,9 +242,9 @@ local function playerHook(info)
       }
       $embedArray = @($embedObject)
       $payload = @{
-      avatar_url = "https://images7.alphacoders.com/944/944843.png"
-      username = "PTHT by Rab & Rei"
-      content = "<:white_check_mark:1168023732955119616> <@]].. discordID ..[[>"
+      avatar_url = "https://cdn.discordapp.com/attachments/1193141414972899370/1198656133204811776/rs.png?ex=65c8ed04&is=65b67804&hm=26f0be87205a0f4a1af71df64258b463996e2dc38e2c4ec199d52c92df2261c9&"
+      username = "PTHT by Rab Store"
+      content = "<a:verify1:1194823074810445935> <@]].. discordID ..[[>"
       embeds = $embedArray
       }
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -283,21 +284,21 @@ local function warnText(text)
     return true
 end
 
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab `6& `b@Rei104`6]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
 logText("Script is now running!")
-overlayText("`6Premium Script by `0[Rab & Rei]")
+overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab `6& `b@Rei104`6]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
 logText("Turn on API List IO,OS, Make Request.")
-overlayText("`6Premium Script by `0[Rab & Rei]")
+overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab `6& `b@Rei104`6]")
-logText("PTHT Script by Rab Store.")
-overlayText("`6Premium Script by `0[Rab & Rei]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("PNB Script by Rab Store.")
+overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab `6& `b@Rei104`6]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
 logText("Checking User ID.")
-overlayText("`6Premium Script by `0[Rab & Rei]")
+overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
 
 SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_gems|1\n")
