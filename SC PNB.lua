@@ -211,7 +211,7 @@ local function playerHook(info)
             }
   
             @{
-                name = "<:stopwatch:1178878505283485817> PNB UpTime"
+                name = "<:stopwatch:1178878505283485817> PNB Up Time"
                 value = "]].. math.floor(oras/86400) ..[[ Days ]].. math.floor(oras%86400/3600) ..[[ Hours ]].. math.floor(oras%86400%3600/60) ..[[ Minutes ]].. math.floor(oras%3600%60) ..[[ Seconds"
                 inline = "false"
             }
