@@ -221,7 +221,7 @@ local function playerHook(info)
             }
   
             @{
-                name = "<:stopwatch:1167910206647304334> PTHT UpcurrentTime"
+                name = "<:stopwatch:1167910206647304334> PTHT Up Time"
                 value = "]].. math.floor(oras/86400) ..[[ Days ]].. math.floor(oras%86400/3600) ..[[ Hours ]].. math.floor(oras%86400%3600/60) ..[[ Minutes ]].. math.floor(oras%3600%60) ..[[ Seconds"
                 inline = "false"
             }
