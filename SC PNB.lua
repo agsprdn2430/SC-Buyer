@@ -153,13 +153,13 @@ local function playerHook(info)
         oras = os.time() - time
         local script = [[
             $webHookUrl = "]].. whUrl ..[["
-            $title = "<a:alert:1194823985628725428> **PNB Information** <a:alert:1194823985628725428>"
+            $title = "<:rotating_light:1168024326386237470> **PNB Information**"
             $date = [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId((Get-Date), 'Singapore Standard Time').ToString('g')
             $cpu = (Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average).Average
             $RAM = Get-WMIObject Win32_PhysicalMemory | Measure -Property capacity -Sum | %{$_.sum/1Mb} 
             $ip = Get-NetIPAddress -AddressFamily IPv4 -InterfaceIndex $(Get-NetConnectionProfile | Select-Object -ExpandProperty InterfaceIndex) | Select-Object -ExpandProperty IPAddress
             $thumbnailObject = @{
-                url = "https://cdn.discordapp.com/attachments/1193141414972899370/1198656133204811776/rs.png?ex=65c8ed04&is=65b67804&hm=26f0be87205a0f4a1af71df64258b463996e2dc38e2c4ec199d52c92df2261c9&"
+                url = ""
             }
             $footerObject = @{
                 text = "Date: ]]..(os.date("!%A %b %d, %Y | Time: %I:%M %p ", os.time() + 8 * 60 * 60))..[[ | @4_rab"
@@ -168,26 +168,26 @@ local function playerHook(info)
             $fieldArray = @(
 
             @{
-                name = "<:mgp:1194831769858494464> Information"
+                name = "<:bangbang:1187766612011520161> Information"
                 value = "World : **]].. currentWorld ..[[**
                 Status : **]].. info ..[[**"
                 inline = "false"
             }
 
             @{
-                name = "<:bot:1201730667281666078> Player Name"
+                name = "<:bust_in_silhouette:1178875116348768326> Player Name"
                 value = "]].. username ..[["
                 inline = "false"
             }
   
             @{
-                name = "<:gems:1194831751193825281> Total Gems"
+                name = "<:gem:1178876023253778462> Total Gems"
                 value = "Current Gems: ]].. FormatNumber(GetPlayerInfo().gems) ..[["
                 inline = "false"
             }
 
             @{
-                name = "<:gems:1194831751193825281> Previous Earned From The Magplant"
+                name = "<:gem:1178876023253778462> Previous Earned From The Magplant"
                 value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[["
                 inline = "false"
             }
@@ -205,13 +205,13 @@ local function playerHook(info)
             }
   
             @{
-                name = "<:mp:1194831735666511912> Magplant Position"
+                name = "<:mobile_phone:1178877938536546345> Magplant Position"
                 value = "Current Remote: (**]].. magplantX ..[[**, **]].. magplantY ..[[**)"
                 inline = "false"
             }
   
             @{
-                name = "<:stopwatch:1178878505283485817> PNB Up Time"
+                name = "<:stopwatch:1178878505283485817> PNB UpTime"
                 value = "]].. math.floor(oras/86400) ..[[ Days ]].. math.floor(oras%86400/3600) ..[[ Hours ]].. math.floor(oras%86400%3600/60) ..[[ Minutes ]].. math.floor(oras%3600%60) ..[[ Seconds"
                 inline = "false"
             }
@@ -232,9 +232,9 @@ local function playerHook(info)
       }
       $embedArray = @($embedObject)
       $payload = @{
-      avatar_url = "https://cdn.discordapp.com/attachments/1193141414972899370/1198656133204811776/rs.png?ex=65c8ed04&is=65b67804&hm=26f0be87205a0f4a1af71df64258b463996e2dc38e2c4ec199d52c92df2261c9&"
-      username = "PNB by Rab Store"
-      content = "<a:verify1:1194823074810445935> <@]].. discordID ..[[>"
+      avatar_url = "https://images7.alphacoders.com/944/944843.png"
+      username = "PNB by Rab"
+      content = "<:white_check_mark:1168023732955119616> <@]].. discordID ..[[>"
       embeds = $embedArray
       }
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -400,9 +400,9 @@ local function reconnectPlayer()
         remoteCheck()
         if findItem(5640) >= 1 or findItem(5640) == 1 then
             Sleep(1000)
-            if GetLocal().pos.x ~= positionX and GetLocal().pos.y ~= positionY then
+            if GetLocal().pos.x ~= posX and GetLocal().pos.y ~= posY then
                 Sleep(100)
-                FindPath(positionX, positionY, 100)
+                FindPath(posX, posY, 100)
                 Sleep(100)
                 wrenchMe()
                 Sleep(100)
@@ -423,9 +423,9 @@ local function worldNot()
         remoteCheck()
         if findItem(5640) >= 1 or findItem(5640) == 1 then
             Sleep(1000)
-            if GetLocal().pos.x ~= positionX and GetLocal().pos.y ~= positionY then
+            if GetLocal().pos.x ~= posX and GetLocal().pos.y ~= posY then
                 Sleep(100)
-                FindPath(positionX, positionY, 100)
+                FindPath(posX, posY, 100)
                 Sleep(100)
                 wrenchMe()
                 Sleep(100)
@@ -489,7 +489,7 @@ if isUserIdAllowed(userId) then
     
         getRemote()
         Sleep(1000)
-        FindPath(positionX, positionY, 100)
+        FindPath(posX, posY, 100)
         Sleep(1000)
         if cheatFarm then
             nowFarm = true
