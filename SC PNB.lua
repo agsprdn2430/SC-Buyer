@@ -1,5 +1,3 @@
-positionX = posX
-positionY = posY
 oldMagplantX = magplantX 
 oldMagplantY = magplantY 
 magplantCount = 1 
