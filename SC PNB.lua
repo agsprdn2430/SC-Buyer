@@ -432,16 +432,6 @@ local function worldNot()
     end
 end
 
-local function PosBreak()
-    if setCurrent then
-        positionX = posX
-        positionY = posY
-        if setCurrent then
-            setCurrent = false
-        end
-    end
-end
-
 load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
 
 function isUserIdAllowed(userid)
@@ -463,7 +453,13 @@ if isUserIdAllowed(userId) then
             reconnectPlayer(worldName)
         end
     
-        PosBreak()
+            if setCurrent then
+                positionX = posX
+                positionY = posY
+                if setCurrent then
+                    setCurrent = false
+                end
+            end
     
         if changeRemote then
             for i = 1, 1 do
