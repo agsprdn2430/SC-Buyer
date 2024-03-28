@@ -76,6 +76,9 @@ AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnConsoleMessage" and var[1]:find("You earned `$(%d+)`` in Tax Credits! You have `$(%d+) Tax Credits`` in total now.") then
         return true
     end
+    if var[0] == "OnConsoleMessage" and var[1]:find("Xenonite") then
+        return true
+    end
     if var[0] == "OnTalkBubble" and var[2]:match("Xenonite") then
             return true
     end
@@ -151,13 +154,13 @@ local function playerHook(info)
         oras = os.time() - time
         local script = [[
             $webHookUrl = "]].. whUrl ..[["
-            $title = "<:rotating_light:1168024326386237470> **PNB Information**"
+            $title = "<a:alert:1194823985628725428> **PNB Information** <a:alert:1194823985628725428>"
             $date = [System.TimeZoneInfo]::ConvertTimeBySystemTimeZoneId((Get-Date), 'Singapore Standard Time').ToString('g')
             $cpu = (Get-WmiObject win32_processor | Measure-Object -property LoadPercentage -Average | Select Average).Average
             $RAM = Get-WMIObject Win32_PhysicalMemory | Measure -Property capacity -Sum | %{$_.sum/1Mb} 
             $ip = Get-NetIPAddress -AddressFamily IPv4 -InterfaceIndex $(Get-NetConnectionProfile | Select-Object -ExpandProperty InterfaceIndex) | Select-Object -ExpandProperty IPAddress
             $thumbnailObject = @{
-                url = ""
+                url = "https://cdn.discordapp.com/attachments/1193141414972899370/1198656133204811776/rs.png?ex=65c8ed04&is=65b67804&hm=26f0be87205a0f4a1af71df64258b463996e2dc38e2c4ec199d52c92df2261c9&"
             }
             $footerObject = @{
                 text = "Date: ]]..(os.date("!%A %b %d, %Y | Time: %I:%M %p ", os.time() + 8 * 60 * 60))..[[ | @4_rab"
@@ -166,26 +169,34 @@ local function playerHook(info)
             $fieldArray = @(
 
             @{
-                name = "<:bangbang:1187766612011520161> Information"
+                name = "<:mgp:1194831769858494464> Information"
                 value = "World : **]].. currentWorld ..[[**
                 Status : **]].. info ..[[**"
                 inline = "false"
             }
 
             @{
-                name = "<:bust_in_silhouette:1178875116348768326> Player Name"
+                name = "<:bot:1201730667281666078> Player Name"
                 value = "]].. username ..[["
+                inline = "false"
+            }
+
+            @{
+                name = "<a:bbgl:1194820681112752239> Lock Information"
+                value = "<:bugl:1194826224627888128> **: ]].. findItem(7188) ..[[**
+                <:dl:1222850459430162493> **: ]].. findItem(1796) ..[[**
+                <:wl:1222850479533588550> **: ]].. findItem(242) ..[[**"
                 inline = "false"
             }
   
             @{
-                name = "<:gem:1178876023253778462> Total Gems"
+                name = "<:gems:1194831751193825281> Total Gems"
                 value = "Current Gems: ]].. FormatNumber(GetPlayerInfo().gems) ..[["
                 inline = "false"
             }
 
             @{
-                name = "<:gem:1178876023253778462> Previous Earned From The Magplant"
+                name = "<:gems:1194831751193825281> Previous Earned From The Magplant"
                 value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[["
                 inline = "false"
             }
@@ -203,13 +214,13 @@ local function playerHook(info)
             }
   
             @{
-                name = "<:mobile_phone:1178877938536546345> Magplant Position"
+                name = "<:mp:1194831735666511912> Magplant Position"
                 value = "Current Remote: (**]].. magplantX ..[[**, **]].. magplantY ..[[**)"
                 inline = "false"
             }
   
             @{
-                name = "<:stopwatch:1178878505283485817> PNB UpTime"
+                name = "<:stopwatch:1178878505283485817> PNB Up Time"
                 value = "]].. math.floor(oras/86400) ..[[ Days ]].. math.floor(oras%86400/3600) ..[[ Hours ]].. math.floor(oras%86400%3600/60) ..[[ Minutes ]].. math.floor(oras%3600%60) ..[[ Seconds"
                 inline = "false"
             }
@@ -230,9 +241,9 @@ local function playerHook(info)
       }
       $embedArray = @($embedObject)
       $payload = @{
-      avatar_url = "https://images7.alphacoders.com/944/944843.png"
-      username = "PNB by Rab"
-      content = "<:white_check_mark:1168023732955119616> <@]].. discordID ..[[>"
+      avatar_url = "https://cdn.discordapp.com/attachments/1193141414972899370/1198656133204811776/rs.png?ex=65c8ed04&is=65b67804&hm=26f0be87205a0f4a1af71df64258b463996e2dc38e2c4ec199d52c92df2261c9&"
+      username = "PNB by Rab Store"
+      content = "<a:verify1:1194823074810445935> <@]].. discordID ..[[>"
       embeds = $embedArray
       }
       [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -287,7 +298,7 @@ Sleep(1000)
 SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
 logText("Checking User ID.")
 overlayText("`6Premium Script by `0[Rab Store]")
-Sleep(1000)
+Sleep(1000) 
 
 local function place(id, x, y)
     pkt = {}
@@ -453,13 +464,13 @@ if isUserIdAllowed(userId) then
             reconnectPlayer(worldName)
         end
     
+        if setCurrent then
+            positionX = posX
+            positionY = posY
             if setCurrent then
-                positionX = posX
-                positionY = posY
-                if setCurrent then
-                    setCurrent = false
-                end
+              setCurrent = false
             end
+        end
     
         if changeRemote then
             for i = 1, 1 do
