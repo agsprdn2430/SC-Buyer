@@ -216,15 +216,6 @@ local function playerHook(info)
             }
 
             @{
-                name = "<:gs:1223097611846811869> Dropped Item Information"
-                value = "Pink Gems **: ]].. math.floor(scanObject(14420)) ..[[**
-                Black Gems **: ]].. math.floor(scanObject(14668)) ..[[**
-                Ultra World Spray **: ]].. math.floor(scanObject(12600)) ..[[**"
-                inline = "false"
-            }
-
-
-            @{
                 name = "<:four_leaf_clover:1178876649090076774> Lucky Clover Stock"
                 value = "Clover Stock: ]].. math.floor(findItem(528)) ..[["
                 inline = "false"
