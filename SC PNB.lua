@@ -167,6 +167,12 @@ end
 time = os.time()
 local function playerHook(info)  
     if whUse then
+        BGL = findItem(7188)
+        DL = findItem(1796)
+        WL = findItem(242)
+        PGEMS = scanObject(14420)
+        BGEMS = scanObject(14668)
+        UWS = scanObject(12600)
         oras = os.time() - time
         local script = [[
             $webHookUrl = "]].. whUrl ..[["
@@ -199,7 +205,7 @@ local function playerHook(info)
 
             @{
                 name = "<a:bbgl:1194820681112752239> Lock Information"
-                value = "<:bugl:1194826224627888128> **: ]].. math.floor(findItem(7188)) ..[[** <:dl:1222850459430162493> **: ]].. math.floor(findItem(1796)) ..[[** <:wl:1222850479533588550> **: ]].. math.floor(findItem(242)) ..[[**"
+                value = "<:bugl:1194826224627888128> **: ]].. BGL ..[[** <:dl:1222850459430162493> **: ]].. DL ..[[** <:wl:1222850479533588550> **: ]].. WL ..[[**"
                 inline = "false"
             }
   
@@ -212,6 +218,14 @@ local function playerHook(info)
             @{
                 name = "<:gems:1194831751193825281> Earned Gems"
                 value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[["
+                inline = "false"
+            }
+
+            @{
+                name = "<:gs:1223097611846811869> Dropped Item Information"
+                value = "Pink Gems **: ]].. PGEMS ..[[**
+                Black Gems **: ]].. BGEMS ..[[**
+                Ultra World Spray **: ]].. UWS ..[[**"
                 inline = "false"
             }
 
@@ -364,11 +378,11 @@ end
 
 local function wrenchMe()
     if GetWorld() == nil then
-        playerHook("Disconnected")
+        -- test
         Sleep(1000)
         RequestJoinWorld(worldName)
         Sleep(1000)
-        playerHook("Reconnected")
+        playerHook("Reconnected, looks like you were recently disconnected")
     else
         if GetWorld() == nil then
             Sleep(100)
@@ -397,11 +411,11 @@ end
 
 local function remoteCheck()
     if GetWorld() == nil then
-        playerHook("Disconnected")
+        -- test
         Sleep(1000)
         RequestJoinWorld(worldName)
         Sleep(1000)
-        playerHook("Reconnected")
+        playerHook("Reconnected, looks like you were recently disconnected")
     else
         if findItem(5640) < 0 or findItem(5640) == 0 then
             Sleep(1000)
@@ -412,11 +426,11 @@ end
 
 local function reconnectPlayer()
     if GetWorld() == nil then
-        playerHook("Disconnected")
+        -- test
         Sleep(1000)
         RequestJoinWorld(worldName)
         Sleep(1000)
-        playerHook("Reconnected")
+        playerHook("Reconnected, looks like you were recently disconnected")
     else
         Sleep(1000)
         remoteCheck()
@@ -435,11 +449,11 @@ end
 
 local function worldNot()
     if GetWorld().name ~= (worldName:upper()) then
-        playerHook("Disconnected")
+        -- test
         Sleep(1000)
         RequestJoinWorld(worldName)
         Sleep(1000)
-        playerHook("Reconnected")
+        playerHook("Reconnected, looks like you were recently disconnected")
     else
         Sleep(1000)
         remoteCheck()
@@ -472,7 +486,7 @@ if isUserIdAllowed(userId) then
     logText("`2Access granted, User ID is registered.")
     while true do
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(1000)
             reconnectPlayer(worldName)
         end
@@ -519,7 +533,7 @@ if isUserIdAllowed(userId) then
                 end
     
                 if GetWorld() == nil then
-                    playerHook("Disconnected")
+                    -- test
                     Sleep(1000)
                     reconnectPlayer()
                     Sleep(1000)
@@ -529,7 +543,7 @@ if isUserIdAllowed(userId) then
                 if GetWorld().name == (worldName:upper()) then
                     Sleep(1000)
                 else
-                    playerHook("Disconnected")
+                    -- test
                     Sleep(1000)
                     worldNot()
                     Sleep(1000)
@@ -580,7 +594,7 @@ if isUserIdAllowed(userId) then
                                 Sleep(100)
     
                                 if GetWorld() == nil then
-                                    playerHook("Disconnected")
+                                    -- test
                                     Sleep(1000)
                                     reconnectPlayer()
                                     Sleep(1000)
@@ -625,7 +639,7 @@ if isUserIdAllowed(userId) then
                                 Sleep(100)
     
                                 if GetWorld() == nil then
-                                    playerHook("Disconnected")
+                                    -- test
                                     Sleep(1000)
                                     reconnectPlayer()
                                     Sleep(1000)
@@ -669,7 +683,7 @@ if isUserIdAllowed(userId) then
                 if GetWorld().name == (worldName:upper()) then
                     Sleep(1000)
                 else
-                    playerHook("Disconnected")
+                    -- test
                     Sleep(1000)
                     worldNot()
                     Sleep(1000)
@@ -677,7 +691,7 @@ if isUserIdAllowed(userId) then
                 end
     
                 if GetWorld() == nil then
-                    playerHook("Disconnected")
+                    -- test
                     Sleep(1000)
                     reconnectPlayer()
                     Sleep(1000)
