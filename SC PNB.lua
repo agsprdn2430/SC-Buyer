@@ -10,7 +10,7 @@ consumeArroz = false
 consumeClover = false 
 player = GetLocal().name 
 currentGem = GetPlayerInfo().gems 
-currentWorld = GetWorld().name 
+currentWorld = GetWorld().name
 
 ChangeValue("[C] Modfly", true)
 
@@ -79,8 +79,14 @@ AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnConsoleMessage" and var[1]:find("Xenonite") then
         return true
     end
+    if var[0]:find("OnTalkBubble") and var[2]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!") then
+        return true
+    end
+    if var[0]:find("OnConsoleMessage") and var[1]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!") then
+        return true
+    end
     if var[0] == "OnTalkBubble" and var[2]:match("Xenonite") then
-            return true
+        return true
     end
     if var[0] == "OnTalkBubble" and var[2]:match("Collected") then
         if removeCollected then
@@ -136,6 +142,16 @@ local function findItem(id)
     return count
 end
 
+local function scanObject(id)
+    count = 0
+    for _, object in pairs(GetObjectList()) do
+        if object.id == id then
+            count = count + object.amount
+        end
+    end
+    return count
+end
+
 local function removeColorAndSymbols(str)
     cleanedStr = string.gsub(str, "`(%S)", '')
     cleanedStr = string.gsub(cleanedStr, "`{2}|(~{2})", '')
@@ -149,7 +165,7 @@ else
 end
 
 time = os.time()
-local function playerHook(info)
+local function playerHook(info)  
     if whUse then
         oras = os.time() - time
         local script = [[
@@ -183,9 +199,7 @@ local function playerHook(info)
 
             @{
                 name = "<a:bbgl:1194820681112752239> Lock Information"
-                value = "<:bugl:1194826224627888128> **: ]].. findItem(7188) ..[[**
-                <:dl:1222850459430162493> **: ]].. findItem(1796) ..[[**
-                <:wl:1222850479533588550> **: ]].. findItem(242) ..[[**"
+                value = "<:bugl:1194826224627888128> **: ]].. math.floor(findItem(7188)) ..[[** <:dl:1222850459430162493> **: ]].. math.floor(findItem(1796)) ..[[** <:wl:1222850479533588550> **: ]].. math.floor(findItem(242)) ..[[**"
                 inline = "false"
             }
   
@@ -196,10 +210,19 @@ local function playerHook(info)
             }
 
             @{
-                name = "<:gems:1194831751193825281> Previous Earned From The Magplant"
+                name = "<:gems:1194831751193825281> Earned Gems"
                 value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[["
                 inline = "false"
             }
+
+            @{
+                name = "<:gs:1223097611846811869> Dropped Item Information"
+                value = "Pink Gems **: ]].. math.floor(scanObject(14420)) ..[[**
+                Black Gems **: ]].. math.floor(scanObject(14668)) ..[[**
+                Ultra World Spray **: ]].. math.floor(scanObject(12600)) ..[[**"
+                inline = "false"
+            }
+
 
             @{
                 name = "<:four_leaf_clover:1178876649090076774> Lucky Clover Stock"
@@ -374,7 +397,6 @@ local function getRemote()
         SendPacket(2, "action|dialog_return\ndialog_name|magplant_edit\nx|".. magplantX .."|\ny|".. magplantY .."|\nbuttonClicked|getRemote")
         currentGem = GetPlayerInfo().gems
         if findItem(5640) >= 1 then
-            playerHook("Magplant Remote is received!")
             Sleep(100)
         end
     end
@@ -465,10 +487,10 @@ if isUserIdAllowed(userId) then
         end
     
         if setCurrent then
-            positionX = posX
-            positionY = posY
+            posX = posX
+            posY = posY
             if setCurrent then
-              setCurrent = false
+                setCurrent = false
             end
         end
     
@@ -529,6 +551,7 @@ if isUserIdAllowed(userId) then
                     for i = 1, 1 do
                         if autoArroz then
                             place(4604, 0, 0)
+                            playerHook("Eating Arroz")
                             break
                         end
                     end
@@ -540,6 +563,7 @@ if isUserIdAllowed(userId) then
                     for i = 1, 1 do
                         if autoClover then
                             place(528, 0, 0)
+                            playerHook("Eating Clover")
                             break
                         end
                     end
