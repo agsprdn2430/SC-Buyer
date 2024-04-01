@@ -170,9 +170,18 @@ local function playerHook(info)
         BGL = findItem(7188)
         DL = findItem(1796)
         WL = findItem(242)
-        PGEMS = scanObject(14420)
-        BGEMS = scanObject(14668)
-        UWS = scanObject(12600)
+        PGEMS = 0
+        BGEMS = 0
+        UWS = 0
+        for _,object in pairs(GetObjectList()) do
+                if object.id == 14420 then
+        PGEMS = PGEMS + object.amount
+        elseif object.id == 14668 then
+        BGEMS = BGEMS + object.amount
+        elseif object.id == 12600 then
+        UWS = UWS + object.amount
+        end
+        end
         oras = os.time() - time
         local script = [[
             $webHookUrl = "]].. whUrl ..[["
@@ -379,9 +388,8 @@ end
 local function wrenchMe()
     if GetWorld() == nil then
         -- test
-        Sleep(1000)
+        Sleep(6000)
         RequestJoinWorld(worldName)
-        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         if GetWorld() == nil then
@@ -412,9 +420,8 @@ end
 local function remoteCheck()
     if GetWorld() == nil then
         -- test
-        Sleep(1000)
+        Sleep(6000)
         RequestJoinWorld(worldName)
-        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         if findItem(5640) < 0 or findItem(5640) == 0 then
@@ -427,9 +434,8 @@ end
 local function reconnectPlayer()
     if GetWorld() == nil then
         -- test
-        Sleep(1000)
+        Sleep(6000)
         RequestJoinWorld(worldName)
-        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         Sleep(1000)
@@ -450,9 +456,8 @@ end
 local function worldNot()
     if GetWorld().name ~= (worldName:upper()) then
         -- test
-        Sleep(1000)
+        Sleep(6000)
         RequestJoinWorld(worldName)
-        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         Sleep(1000)
