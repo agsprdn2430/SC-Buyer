@@ -1,3 +1,5 @@
+load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
+
     local function logText(text)
         packet = {}
         packet[0] = "OnConsoleMessage"
@@ -17,8 +19,6 @@
     SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
     logText("Checking User ID.")
     Sleep(1000) 
-
-load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
 
 function isUserIdAllowed(userid)
     for _, allowedId in ipairs(allowedUserIds) do
