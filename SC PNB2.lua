@@ -1,4 +1,3 @@
-ChangeValue("[C] Modfly", true)
 local AUTO_CONSUME = true
 local STAR_SMT = false
 local start = os.time()
