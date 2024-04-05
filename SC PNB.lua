@@ -10,7 +10,7 @@ consumeArroz = false
 consumeClover = false 
 player = GetLocal().name 
 currentGem = GetPlayerInfo().gems 
-currentWorld = GetWorld().name
+currentWorld = GetWorld().name 
 
 ChangeValue("[C] Modfly", true)
 
@@ -76,17 +76,8 @@ AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnConsoleMessage" and var[1]:find("You earned `$(%d+)`` in Tax Credits! You have `$(%d+) Tax Credits`` in total now.") then
         return true
     end
-    if var[0] == "OnConsoleMessage" and var[1]:find("Xenonite") then
-        return true
-    end
-    if var[0]:find("OnTalkBubble") and var[2]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!") then
-        return true
-    end
-    if var[0]:find("OnConsoleMessage") and var[1]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!") then
-        return true
-    end
     if var[0] == "OnTalkBubble" and var[2]:match("Xenonite") then
-        return true
+            return true
     end
     if var[0] == "OnTalkBubble" and var[2]:match("Collected") then
         if removeCollected then
@@ -142,16 +133,6 @@ local function findItem(id)
     return count
 end
 
-local function scanObject(id)
-    count = 0
-    for _, object in pairs(GetObjectList()) do
-        if object.id == id then
-            count = count + object.amount
-        end
-    end
-    return count
-end
-
 local function removeColorAndSymbols(str)
     cleanedStr = string.gsub(str, "`(%S)", '')
     cleanedStr = string.gsub(cleanedStr, "`{2}|(~{2})", '')
@@ -170,18 +151,6 @@ local function playerHook(info)
         BGL = findItem(7188)
         DL = findItem(1796)
         WL = findItem(242)
-        PGEMS = 0
-        BGEMS = 0
-        UWS = 0
-        for _,object in pairs(GetObjectList()) do
-                if object.id == 14420 then
-        PGEMS = PGEMS + object.amount
-        elseif object.id == 14668 then
-        BGEMS = BGEMS + object.amount
-        elseif object.id == 12600 then
-        UWS = UWS + object.amount
-        end
-        end
         oras = os.time() - time
         local script = [[
             $webHookUrl = "]].. whUrl ..[["
@@ -227,14 +196,6 @@ local function playerHook(info)
             @{
                 name = "<:gems:1194831751193825281> Earned Gems"
                 value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[["
-                inline = "false"
-            }
-
-            @{
-                name = "<:gs:1223097611846811869> Dropped Item Information"
-                value = "Pink Gems **: ]].. PGEMS ..[[**
-                Black Gems **: ]].. BGEMS ..[[**
-                Ultra World Spray **: ]].. UWS ..[[**"
                 inline = "false"
             }
 
@@ -335,7 +296,7 @@ Sleep(1000)
 SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
 logText("Checking User ID.")
 overlayText("`6Premium Script by `0[Rab Store]")
-Sleep(1000) 
+Sleep(1000)
 
 local function place(id, x, y)
     pkt = {}
@@ -388,8 +349,9 @@ end
 local function wrenchMe()
     if GetWorld() == nil then
         -- test
-        Sleep(6000)
+        Sleep(1000)
         RequestJoinWorld(worldName)
+        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         if GetWorld() == nil then
@@ -410,6 +372,7 @@ local function getRemote()
         SendPacket(2, "action|dialog_return\ndialog_name|magplant_edit\nx|".. magplantX .."|\ny|".. magplantY .."|\nbuttonClicked|getRemote")
         currentGem = GetPlayerInfo().gems
         if findItem(5640) >= 1 then
+            playerHook("Magplant Remote is received!")
             Sleep(100)
         end
     end
@@ -420,8 +383,9 @@ end
 local function remoteCheck()
     if GetWorld() == nil then
         -- test
-        Sleep(6000)
+        Sleep(1000)
         RequestJoinWorld(worldName)
+        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         if findItem(5640) < 0 or findItem(5640) == 0 then
@@ -434,17 +398,18 @@ end
 local function reconnectPlayer()
     if GetWorld() == nil then
         -- test
-        Sleep(6000)
+        Sleep(1000)
         RequestJoinWorld(worldName)
+        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         Sleep(1000)
         remoteCheck()
         if findItem(5640) >= 1 or findItem(5640) == 1 then
             Sleep(1000)
-            if GetLocal().pos.x ~= posX and GetLocal().pos.y ~= posY then
+            if GetLocal().pos.x ~= positionX and GetLocal().pos.y ~= positionY then
                 Sleep(100)
-                FindPath(posX, posY, 100)
+                FindPath(positionX, positionY, 100)
                 Sleep(100)
                 wrenchMe()
                 Sleep(100)
@@ -456,17 +421,18 @@ end
 local function worldNot()
     if GetWorld().name ~= (worldName:upper()) then
         -- test
-        Sleep(6000)
+        Sleep(1000)
         RequestJoinWorld(worldName)
+        Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
         Sleep(1000)
         remoteCheck()
         if findItem(5640) >= 1 or findItem(5640) == 1 then
             Sleep(1000)
-            if GetLocal().pos.x ~= posX and GetLocal().pos.y ~= posY then
+            if GetLocal().pos.x ~= positionX and GetLocal().pos.y ~= positionY then
                 Sleep(100)
-                FindPath(posX, posY, 100)
+                FindPath(positionX, positionY, 100)
                 Sleep(100)
                 wrenchMe()
                 Sleep(100)
@@ -497,8 +463,8 @@ if isUserIdAllowed(userId) then
         end
     
         if setCurrent then
-            posX = posX
-            posY = posY
+            positionX = math.floor(GetLocal().pos.x / 32)
+            positionY = math.floor(GetLocal().pos.y / 32)
             if setCurrent then
                 setCurrent = false
             end
@@ -526,7 +492,7 @@ if isUserIdAllowed(userId) then
     
         getRemote()
         Sleep(1000)
-        FindPath(posX, posY, 100)
+        FindPath(positionX, positionY, 100)
         Sleep(1000)
         if cheatFarm then
             nowFarm = true
@@ -561,7 +527,6 @@ if isUserIdAllowed(userId) then
                     for i = 1, 1 do
                         if autoArroz then
                             place(4604, 0, 0)
-                            playerHook("Eating Arroz")
                             break
                         end
                     end
@@ -573,7 +538,6 @@ if isUserIdAllowed(userId) then
                     for i = 1, 1 do
                         if autoClover then
                             place(528, 0, 0)
-                            playerHook("Eating Clover")
                             break
                         end
                     end
