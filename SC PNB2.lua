@@ -1,48 +1,131 @@
-load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
+ChangeValue("[C] Modfly", true)
+local AUTO_CONSUME = true
+local STAR_SMT = false
+local start = os.time()
+local NAME = GetLocal().name
+local WORLD_NAME = GetWorld().name
+local gems = GetPlayerInfo().gems
+local MULAI = false
+jumlahbgems = 0
+SUCK_MODE = false
+TAKE_MODE = true
 
-    local function logText(text)
-        packet = {}
-        packet[0] = "OnConsoleMessage"
-        packet[1] = "`^[Rab Store]`6 ".. text
-        SendVariantList(packet)
-    end
-
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("Script is now running!")
-    Sleep(1000)
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("Turn on API List IO,OS, Make Request.")
-    Sleep(1000)
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("PNB Script by Rab Store.")
-    Sleep(1000)
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("Checking User ID.")
-    Sleep(1000) 
-
-function isUserIdAllowed(userid)
-    for _, allowedId in ipairs(allowedUserIds) do
-        if userid == allowedId then
-            return true
-        end
-    end
-    return false
+local function logText(text)
+    packet = {}
+    packet[0] = "OnConsoleMessage"
+    packet[1] = "`^[Rab Store]`6 ".. text
+    SendVariantList(packet)
 end
 
-userId = tostring(GetLocal().userid)
-if isUserIdAllowed(userId) then
-    logText("`2Access granted, User ID is registered.")
-    ChangeValue("[C] Modfly", true)
-    local AUTO_CONSUME = true
-    local STAR_SMT = false
-    local start = os.time()
-    local NAME = GetLocal().name
-    local WORLD_NAME = GetWorld().name
-    local gems = GetPlayerInfo().gems
-    local MULAI = false
-    jumlahbgems = 0
-    SUCK_MODE = false
-    TAKE_MODE = true
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("Script is now running!")
+Sleep(1000)
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("Turn on API List IO,OS, Make Request.")
+Sleep(1000)
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("PNB Script by Rab Store.")
+Sleep(1000)
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("Checking User ID.")
+Sleep(1000) 
+
+AddHook("onvariant", "Kaede", function(var)
+    if var[0] == "OnConsoleMessage" and var[1]:find("World Locked") then
+        delayed = true
+        return true
+    end
+    if var[0] == "OnConsoleMessage" and var[1]:find("Where would you like to go?") then
+        getworld = true
+        return true
+    end
+    if var[0] == "OnTalkBubble" and var[2]:find("You received a MAGPLANT 5000 Remote.") then
+        FindPath(xawal,yawal)
+        cheats = true
+        return true
+    end
+    if var[0] == "OnTalkBubble" and var[2]:find("The MAGPLANT 5000 is empty.") then
+        empty = true
+        return true
+    end
+    if var[0] == "OnDialogRequest" and var[1]:find("The machine is currently empty!") then
+        nothing = true
+        nono = true
+        return true
+    end
+    if var[0] == "OnDialogRequest" and var[1]:find("The machine contains") then
+        return true
+    end
+if var[0] == "OnDialogRequest" and var[1]:find("Stock: `4EMPTY!") then
+        nothing = true
+        nono = true
+        return true
+    end
+    if var[0]:find("OnSDBroadcast") then
+        return true
+    end
+    if var[0] == "OnConsoleMessage" then
+        if var[1]:find("`oYour luck has worn off.") then
+        AUTO_CONSUME = true
+        elseif var[1]:find("`oYour stomach's rumbling.") then
+        AUTO_CONSUME = true
+        end
+        if var[0]:find("OnConsoleMessage") and var[1]:find("Cheat Active") then
+        return true
+        end
+        if var[0]:find("OnConsoleMessage") and var[1]:find("Whoa, calm down toggling cheats on/off... Try again in a second!") then
+        return true
+        end
+        if var[0]:find("OnConsoleMessage") and var[1]:find("Applying cheats...") then
+        return true
+        end
+        if var[0]:find("OnConsoleMessage") and var[1]:find("Spam detected") then
+        return true
+        end
+    end
+    if var[0]:find("OnDialogRequest") and var[1]:find("Item Finder") then
+        return true
+    end
+if var[0]:find("OnConsoleMessage") and var[1]:find("entered") then
+return true
+end
+if var[0]:find("OnTalkBubble") and var[2]:find("entered") then
+return true
+end
+if var[0]:find("OnConsoleMessage") and var[1]:find("left") then
+return true
+end
+if var[0]:find("OnTalkBubble") and var[2]:find("left") then
+return true
+end
+if var[0]:find("OnTalkBubble") and var[2]:find("`wXenonite has changed everyone's powers!") then
+    return true
+end
+if var[0]:find("OnConsoleMessage") and var[1]:find("`wXenonite has changed everyone's powers!") then
+    return true
+end
+if var[0]:find("OnTalkBubble") and var[2]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!") then
+    return true
+end
+if var[0]:find("OnConsoleMessage") and var[1]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!") then
+    return true
+end
+if var[0]:find("OnDialogRequest") and var[1]:find("MAGPLANT 5000") then
+return true
+end
+if var[0] == "OnTalkBubble" and var[2]:find(" You got `$Diamond Lock``!") then
+hitungdl = true
+return true
+end
+if var[0] == "OnDialogRequest" and var[1]:find("Diamond Lock") then
+return true
+end
+if var[0] == "OnDialogRequest" and var[1]:find("`bThe Black Backpack") then
+jumlahbgems = var[1]:match("You have (%d+)")
+return true
+end
+    return false
+end)
 
     function removeColorAndSymbols(str)
         local cleanedStr = string.gsub(str, "`(%S)", '')
@@ -182,6 +265,21 @@ if isUserIdAllowed(userId) then
         ]
         }]])
         end
+
+        load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
+
+        function isUserIdAllowed(userid)
+            for _, allowedId in ipairs(allowedUserIds) do
+                if userid == allowedId then
+                    return true
+                end
+            end
+            return false
+        end
+        
+        userId = tostring(GetLocal().userid)
+        if isUserIdAllowed(userId) then
+            logText("`2Access granted, User ID is registered.")
 
     function cek(id)
         for _, item in pairs(GetInventory()) do
@@ -335,7 +433,6 @@ if isUserIdAllowed(userId) then
     end
     return false
     end)
-
 
     while true do
         Sleep(500)
