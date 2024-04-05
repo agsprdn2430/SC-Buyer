@@ -1,3 +1,23 @@
+    local function logText(text)
+        packet = {}
+        packet[0] = "OnConsoleMessage"
+        packet[1] = "`^[Rab Store]`6 ".. text
+        SendVariantList(packet)
+    end
+
+    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+    logText("Script is now running!")
+    Sleep(1000)
+    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+    logText("Turn on API List IO,OS, Make Request.")
+    Sleep(1000)
+    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+    logText("PNB Script by Rab Store.")
+    Sleep(1000)
+    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+    logText("Checking User ID.")
+    Sleep(1000) 
+
 load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
 
 function isUserIdAllowed(userid)
@@ -23,26 +43,6 @@ if isUserIdAllowed(userId) then
     jumlahbgems = 0
     SUCK_MODE = false
     TAKE_MODE = true
-
-    local function logText(text)
-        packet = {}
-        packet[0] = "OnConsoleMessage"
-        packet[1] = "`^[Rab Store]`6 ".. text
-        SendVariantList(packet)
-    end
-
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("Script is now running!")
-    Sleep(1000)
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("Turn on API List IO,OS, Make Request.")
-    Sleep(1000)
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("PNB Script by Rab Store.")
-    Sleep(1000)
-    SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-    logText("Checking User ID.")
-    Sleep(1000) 
 
     function removeColorAndSymbols(str)
         local cleanedStr = string.gsub(str, "`(%S)", '')
