@@ -1,34 +1,3 @@
-local AUTO_CONSUME = true
-local STAR_SMT = false
-local start = os.time()
-local NAME = GetLocal().name
-local WORLD_NAME = GetWorld().name
-local gems = GetPlayerInfo().gems
-local MULAI = false
-jumlahbgems = 0
-SUCK_MODE = false
-TAKE_MODE = true
-
-local function logText(text)
-    packet = {}
-    packet[0] = "OnConsoleMessage"
-    packet[1] = "`^[Rab Store]`6 ".. text
-    SendVariantList(packet)
-end
-
-SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-logText("Script is now running!")
-Sleep(1000)
-SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-logText("Turn on API List IO,OS, Make Request.")
-Sleep(1000)
-SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-logText("PNB Script by Rab Store.")
-Sleep(1000)
-SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
-logText("Checking User ID.")
-Sleep(1000) 
-
 AddHook("onvariant", "Kaede", function(var)
     if var[0] == "OnConsoleMessage" and var[1]:find("World Locked") then
         delayed = true
@@ -125,6 +94,38 @@ return true
 end
     return false
 end)
+
+local function logText(text)
+    packet = {}
+    packet[0] = "OnConsoleMessage"
+    packet[1] = "`^[Rab Store]`6 ".. text
+    SendVariantList(packet)
+end
+
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("Script is now running!")
+Sleep(1000)
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("Turn on API List IO,OS, Make Request.")
+Sleep(1000)
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("PNB Script by Rab Store.")
+Sleep(1000)
+SendPacket(2, "action|input\ntext|`^[Rab Store] `6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+logText("Checking User ID.")
+Sleep(1000)
+
+ChangeValue("[C] Modfly", true)
+local AUTO_CONSUME = true
+local STAR_SMT = false
+local start = os.time()
+local NAME = GetLocal().name
+local WORLD_NAME = GetWorld().name
+local gems = GetPlayerInfo().gems
+local MULAI = false
+jumlahbgems = 0
+SUCK_MODE = false
+TAKE_MODE = true
 
 load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
 
