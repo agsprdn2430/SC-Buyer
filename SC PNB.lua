@@ -349,8 +349,9 @@ end
 local function wrenchMe()
     if GetWorld() == nil then
         -- test
-        Sleep(1000)
+        Sleep(delayErcon)
         RequestJoinWorld(worldName)
+        overlayText("[Rab Store] `^Request to join world `2".. worldName.."")
         Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
@@ -372,7 +373,6 @@ local function getRemote()
         SendPacket(2, "action|dialog_return\ndialog_name|magplant_edit\nx|".. magplantX .."|\ny|".. magplantY .."|\nbuttonClicked|getRemote")
         currentGem = GetPlayerInfo().gems
         if findItem(5640) >= 1 then
-            playerHook("Magplant Remote is received!")
             Sleep(100)
         end
     end
@@ -383,8 +383,9 @@ end
 local function remoteCheck()
     if GetWorld() == nil then
         -- test
-        Sleep(1000)
+        Sleep(delayErcon)
         RequestJoinWorld(worldName)
+        overlayText("[Rab Store] `^Request to join world `2".. worldName.."")
         Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
@@ -398,8 +399,9 @@ end
 local function reconnectPlayer()
     if GetWorld() == nil then
         -- test
-        Sleep(1000)
+        Sleep(delayErcon)
         RequestJoinWorld(worldName)
+        overlayText("[Rab Store] `^Request to join world `2".. worldName.."")
         Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
@@ -421,8 +423,9 @@ end
 local function worldNot()
     if GetWorld().name ~= (worldName:upper()) then
         -- test
-        Sleep(1000)
+        Sleep(delayErcon)
         RequestJoinWorld(worldName)
+        overlayText("[Rab Store] `^Request to join world `2".. worldName.."")
         Sleep(1000)
         playerHook("Reconnected, looks like you were recently disconnected")
     else
