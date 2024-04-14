@@ -6,8 +6,6 @@ setCurrent = true
 buyLock = false 
 autoDLock = false 
 changeRemote = false 
-consumeArroz = false 
-consumeClover = false 
 player = GetLocal().name 
 currentGem = GetPlayerInfo().gems 
 currentWorld = GetWorld().name 
@@ -37,23 +35,11 @@ AddHook("onvariant", "mommy", function(var)
         end
         return true
     end
-    if var[0] == "OnDialogRequest" and var[1]:find("add_player_info") then
-        if var[1]:find("|528|") then
-            consumeClover = true
-        else
-            consumeClover = false
-        end
-
-        if var[1]:find("|4604|") then
-            consumeArroz = true
-        else
-            consumeArroz = false
-        end
-
-        if var[1]:find("|290|") then
-            ghostState = true
-        else
-            ghostState = false
+    if var[0] == "OnConsoleMessage" then
+        if var[1]:find("`oYour luck has worn off.") then
+           autoEat = true
+        elseif var[1]:find("`oYour stomach's rumbling.") then
+           autoEat = true
         end
 
         return true
@@ -76,8 +62,17 @@ AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnConsoleMessage" and var[1]:find("You earned `$(%d+)`` in Tax Credits! You have `$(%d+) Tax Credits`` in total now.") then
         return true
     end
+    if var[0] == "OnConsoleMessage" and var[1]:find("Xenonite") then
+        return true
+    end
+    if var[0] == "OnConsoleMessage" and var[1]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!")  then
+        return true
+    end
     if var[0] == "OnTalkBubble" and var[2]:match("Xenonite") then
             return true
+    end
+    if var[0] == "OnTalkBubble" and var[2]:match("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!") then
+        return true
     end
     if var[0] == "OnTalkBubble" and var[2]:match("Collected") then
         if removeCollected then
@@ -346,24 +341,6 @@ local function wrench(x, y)
     SendPacketRaw(false, pkt)
 end
 
-local function wrenchMe()
-    if GetWorld() == nil then
-        -- test
-        Sleep(delayErcon)
-        RequestJoinWorld(worldName)
-        overlayText("[Rab Store] `^Request to join world `2".. worldName.."")
-        Sleep(1000)
-        playerHook("Reconnected, looks like you were recently disconnected")
-    else
-        if GetWorld() == nil then
-            Sleep(100)
-            return
-        end
-        SendPacket(2, "action|wrench\n|netid|".. GetLocal().netid)
-        Sleep(100)
-    end
-end
-
 local function getRemote()
     if findItem(5640) == 0 or changeRemote then
         FindPath(magplantX, magplantY - 1, 100)
@@ -413,8 +390,6 @@ local function reconnectPlayer()
                 Sleep(100)
                 FindPath(positionX, positionY, 100)
                 Sleep(100)
-                wrenchMe()
-                Sleep(100)
             end
         end
     end
@@ -436,8 +411,6 @@ local function worldNot()
             if GetLocal().pos.x ~= positionX and GetLocal().pos.y ~= positionY then
                 Sleep(100)
                 FindPath(positionX, positionY, 100)
-                Sleep(100)
-                wrenchMe()
                 Sleep(100)
             end
         end
@@ -464,7 +437,7 @@ if isUserIdAllowed(userId) then
             Sleep(1000)
             reconnectPlayer(worldName)
         end
-    
+
         if setCurrent then
             positionX = math.floor(GetLocal().pos.x / 32)
             positionY = math.floor(GetLocal().pos.y / 32)
@@ -523,38 +496,25 @@ if isUserIdAllowed(userId) then
                     Sleep(1000)
                     break
                 end
-    
-                wrenchMe()
-                if not consumeArroz then
-                    Sleep(100)
-                    for i = 1, 1 do
-                        if autoArroz then
-                            place(4604, 0, 0)
-                            break
-                        end
-                    end
-                end
-    
-                wrenchMe()
-                if not consumeClover then
-                    Sleep(100)
-                    for i = 1, 1 do
-                        if autoClover then
-                            place(528, 0, 0)
-                            break
-                        end
-                    end
-                end
-    
-                wrenchMe()
-                if not ghostState then
-                    Sleep(100)
-                    for i = 1, 1 do
-                        if autoGhost then
-                            SendPacket(2, "action|input\ntext|/ghost")
-                            break
-                        end
-                    end
+
+                if autoEat == true then
+                    SendPacket(2,"action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0")
+                    Sleep(500)
+                    place(4604, 0, 0)
+                    overlayText("[Rab Store] `^Auto Eat Buff")
+                    logText("Added `2Arroz Con Pollo `6buff for 30 minutes (`2More Gems!`6).")
+                    Sleep(500)
+                    place(528, 0, 0)
+                    overlayText("[Rab Store] `^Auto Eat Buff")
+                    logText("Added `2Lucky Clover `6buff for 30 minutes (`2More Lucky!`6).")
+                    Sleep(500)
+                    nowFarm = true
+                    autoEat = false
+                end        
+
+                if autoGhost then
+                    SendPacket(2, "action|input\ntext|/ghost")
+                    break
                 end
     
                 if nowBuy then  
