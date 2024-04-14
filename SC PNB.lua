@@ -459,7 +459,7 @@ if isUserIdAllowed(userId) then
                     magplantCount = 1
                     magplantX = oldMagplantX
                 end
-                SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0\ncheck_lonely".. peopleHide .."\ncheck_ignoreo|".. dropHidden .."\ncheck_gems|".. collectGem)
+                SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0\ncheck_lonely".. peopleHide .."\ncheck_gems|".. collectGem)
                 Sleep(1000)
             end
             getRemote()
@@ -476,7 +476,7 @@ if isUserIdAllowed(userId) then
             while nowFarm do
                 for i = 1, 1 do
                     Sleep(4500)
-                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_ignoreo|".. dropHidden .."\ncheck_gems|".. collectGem)
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem)
                 end
     
                 if GetWorld() == nil then
