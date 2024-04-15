@@ -468,7 +468,7 @@ local function harvest()
         while countReady() > 0 do
             if findItem(itemID) >= 1 or findItem(itemID) == 1 then
                 for y = 0, 199  do
-                    for x = x1, x1 do
+                    for x = x1, x2 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y,50)
                             Sleep(delayHarvest)
@@ -487,7 +487,7 @@ local function harvest()
 
             if findItem(itemID) == 0 then
                 for y = 0, 199 do
-                    for x = x1, x1 do
+                    for x = x1, x2 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y, 50)
                             Sleep(delayHarvest)
@@ -496,50 +496,6 @@ local function harvest()
                             hold()
                         end
             
-                        if GetWorld() == nil then
-                            Sleep(1000)
-                            reconnectPlayer()
-                            break
-                        end
-                    end
-                end
-            end
-        end
-    end
-end
-
-local function harvestMiss()
-    if autoHarvest then
-        while countReady() > 0 do
-            if findItem(itemID) >= 1 or findItem(itemID) == 1 then
-                for y = 0, 199 do
-                    for x = 0, 199 do
-                        if isReady(GetTile(x, y)) then
-                            FindPath(x, y)
-                            Sleep(delayHarvest)
-                            punch(0, 0)
-                        end
-
-                        if GetWorld() == nil then
-                            Sleep(1000)
-                            reconnectPlayer()
-                            break
-                        end
-                    end
-                end
-            end
-
-            if findItem(itemID) == 0 then
-                for y = 0, 199 do
-                    for x = 0, 199 do
-                        if isReady(GetTile(x, y)) then
-                            FindPath(x, y)
-                            Sleep(delayHarvest)
-                            punch(0, 0)
-                            Sleep(delayHarvest)
-                            hold()
-                        end
-
                         if GetWorld() == nil then
                             Sleep(1000)
                             reconnectPlayer()
@@ -1507,8 +1463,6 @@ if isUserIdAllowed(userId) then
         remoteCheck()---
         Sleep(1000)
         harvest()---
-        Sleep(1000)
-        harvestMiss()---
         Sleep(1000)
 
         plant()--------------------------------------------------
