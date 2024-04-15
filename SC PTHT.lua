@@ -353,7 +353,7 @@ local function cheatSetup()
                 FindPath(tile.x, tile.y, 60)
                 if nowEnable then
                     Sleep(1000)
-                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autoplace|1\ncheck_gems|1")
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_gems|1")
                     isEnable = true
                     Sleep(1000)
                 end
@@ -372,7 +372,7 @@ local function cheatSetup()
                 place(5640, 0, 0)
                 if nowEnable then
                     Sleep(1000)
-                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autoplace|1\ncheck_gems|1")
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_gems|1")
                     isEnable = true
                     Sleep(1000)
                 end
@@ -468,7 +468,7 @@ local function harvest()
         while countReady() > 0 do
             if findItem(itemID) >= 1 or findItem(itemID) == 1 then
                 for y = 0, 199  do
-                    for x = x1, x1 do
+                    for x = 0, 199 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y,50)
                             Sleep(delayHarvest)
@@ -487,7 +487,7 @@ local function harvest()
 
             if findItem(itemID) == 0 then
                 for y = 0, 199 do
-                    for x = x1, x1 do
+                    for x = 0, 199 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y, 50)
                             Sleep(delayHarvest)
