@@ -1,3 +1,4 @@
+starB = false
 oldMagplantX = magplantX 
 oldMagplantY = magplantY 
 magplantCount = 1 
@@ -7,8 +8,10 @@ buyLock = false
 autoDLock = false 
 changeRemote = false 
 player = GetLocal().name 
+playerUserID = GetLocal().userid
 currentGem = GetPlayerInfo().gems 
 currentWorld = GetWorld().name 
+jumlahbgems = 0
 
 ChangeValue("[C] Modfly", true)
 
@@ -33,6 +36,10 @@ AddHook("onvariant", "mommy", function(var)
             changeRemote = true
             buyNow = false
         end
+        return true
+    end
+    if var[0] == "OnDialogRequest" and var[1]:find("`bThe Black Backpack") then
+        jumlahbgems = var[1]:match("You have (%d+)")
         return true
     end
     if var[0] == "OnConsoleMessage" then
@@ -140,9 +147,16 @@ else
     username = removeColorAndSymbols(GetLocal().name)
 end
 
+if GetWorld() == nil then
+    playerUID = removeColorAndSymbols(playerUserID)
+else
+    playerUID = removeColorAndSymbols(GetLocal().userid)
+end
+
 time = os.time()
 local function playerHook(info)  
     if whUse then
+        BLGL = findItem(11550)
         BGL = findItem(7188)
         DL = findItem(1796)
         WL = findItem(242)
@@ -158,7 +172,7 @@ local function playerHook(info)
                 url = "https://cdn.discordapp.com/attachments/1193141414972899370/1198656133204811776/rs.png?ex=65c8ed04&is=65b67804&hm=26f0be87205a0f4a1af71df64258b463996e2dc38e2c4ec199d52c92df2261c9&"
             }
             $footerObject = @{
-                text = "Date: ]]..(os.date("!%A %b %d, %Y | Time: %I:%M %p ", os.time() + 8 * 60 * 60))..[[ | @4_rab"
+                text = "Date: ]]..(os.date("!%A %b %d, %Y | Time: %I:%M %p ", os.time() + 8 * 60 * 60))..[[ | @4rab."
             }
             
             $fieldArray = @(
@@ -171,50 +185,38 @@ local function playerHook(info)
             }
 
             @{
-                name = "<:bot:1201730667281666078> Player Name"
-                value = "]].. username ..[["
+                name = "<:bot:1201730667281666078> Player Information"
+                value = "Username : **]].. username ..[[**
+                User ID : **]].. playerUID ..[[**"
                 inline = "false"
             }
 
             @{
-                name = "<a:bbgl:1194820681112752239> Lock Information"
-                value = "<:bugl:1194826224627888128> **: ]].. BGL ..[[** <:dl:1222850459430162493> **: ]].. DL ..[[** <:wl:1222850479533588550> **: ]].. WL ..[[**"
+                name = "<a:igl:1194820900026073149> Lock Information"
+                value = "<:blgl:1194826207015997511> **: ]].. BLGL ..[[**
+                <:bugl:1194826224627888128> **: ]].. BGL ..[[**
+                <:dl:1222850459430162493> **: ]].. DL ..[[**
+                <:wl:1222850479533588550> **: ]].. WL ..[[**"
                 inline = "false"
             }
   
             @{
-                name = "<:gems:1194831751193825281> Total Gems"
-                value = "Current Gems: ]].. FormatNumber(GetPlayerInfo().gems) ..[["
+                name = "<:gems:1194831751193825281> Gems Information"
+                value = "Current Gems <:rgems:1225699132711243817>: **]].. FormatNumber(GetPlayerInfo().gems) ..[[**
+                Earned Gems <:rgems:1225699132711243817>: **]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[[**"
                 inline = "false"
             }
 
             @{
-                name = "<:gems:1194831751193825281> Earned Gems"
-                value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[["
-                inline = "false"
-            }
-
-            @{
-                name = "<:four_leaf_clover:1178876649090076774> Lucky Clover Stock"
-                value = "Clover Stock: ]].. math.floor(findItem(528)) ..[["
-                inline = "false"
-            }
-
-            @{
-                name = "<:taco:1178877190507614248> Arroz Con Apollo Stock"
-                value = "Arroz Stock: ]].. math.floor(findItem(4604)) ..[["
+                name = "<a:flash:1197511764603052102> Buff Information"
+                value = "<:four_leaf_clover:1178876649090076774> Clover Stock: **]].. math.floor(findItem(528)) ..[[**
+                <:taco:1178877190507614248> Arroz Stock: **]].. math.floor(findItem(4604)) ..[[**"
                 inline = "false"
             }
   
             @{
                 name = "<:mp:1194831735666511912> Magplant Position"
                 value = "Current Remote: (**]].. magplantX ..[[**, **]].. magplantY ..[[**)"
-                inline = "false"
-            }
-  
-            @{
-                name = "<:stopwatch:1178878505283485817> PNB Up Time"
-                value = "]].. math.floor(oras/86400) ..[[ Days ]].. math.floor(oras%86400/3600) ..[[ Hours ]].. math.floor(oras%86400%3600/60) ..[[ Minutes ]].. math.floor(oras%3600%60) ..[[ Seconds"
                 inline = "false"
             }
 
@@ -348,7 +350,6 @@ local function getRemote()
         wrench(0, 1)
         Sleep(100)
         SendPacket(2, "action|dialog_return\ndialog_name|magplant_edit\nx|".. magplantX .."|\ny|".. magplantY .."|\nbuttonClicked|getRemote")
-        currentGem = GetPlayerInfo().gems
         if findItem(5640) >= 1 then
             Sleep(100)
         end
@@ -417,6 +418,17 @@ local function worldNot()
     end
 end
 
+local function getPos()
+    if setCurrent then
+        positionX = math.floor(GetLocal().pos.x / 32)
+        positionY = math.floor(GetLocal().pos.y / 32)
+        currentGem = GetPlayerInfo().gems
+        if setCurrent then
+            setCurrent = false
+        end
+    end
+end
+
 load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PNB.lua","GET").content)()
 
 function isUserIdAllowed(userid)
@@ -438,13 +450,7 @@ if isUserIdAllowed(userId) then
             reconnectPlayer(worldName)
         end
 
-        if setCurrent then
-            positionX = math.floor(GetLocal().pos.x / 32)
-            positionY = math.floor(GetLocal().pos.y / 32)
-            if setCurrent then
-                setCurrent = false
-            end
-        end
+        getPos()
     
         if changeRemote then
             for i = 1, 1 do
@@ -633,6 +639,25 @@ if isUserIdAllowed(userId) then
                 if changeRemote then
                     nowFarm = false
                     break
+                end
+
+                if os.time() - time >= whDelay then
+                    starB = true
+                    if suckMode then
+                        SendPacket(2, "action|wrench\n|netid|"..GetLocal().netid)
+                        Sleep(200)
+                        SendPacket(2, "action|dialog_return\ndialog_name|popup\nbuttonClicked|bgems")
+                        Sleep(200)
+                        SendPacket(2, "action|dialog_return\ndialog_name|popup\nbuttonClicked|bgem_suckall")
+                        playerHook("Taking Dropped Black Gems every ".. whDelay .." Seconds!")
+                        Sleep(200)
+                    elseif not suckMode then
+                        playerHook("Webhook PING! every ".. whDelay .." Seconds!")
+                        Sleep(200)
+                    end
+                    time = os.time()
+                    Sleep(1000)
+                    starB = false
                 end
             end
         end
