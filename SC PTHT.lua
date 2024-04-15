@@ -304,6 +304,18 @@ Sleep(1000)
 SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_gems|1\n")
 Sleep(100)
 
+local function hold()
+    if GetWorld() == nil then
+        return
+    end
+    
+	local pkt = {}
+	pkt.type = 0
+	pkt.state = 16779296
+	SendPacketRaw(pkt)
+	Sleep(90)
+end
+
 local function countReady()
     readyTree = 0
     for _, tile in pairs(GetTiles()) do
@@ -452,30 +464,53 @@ local function wrenchMe()
 end
 
 local function harvest()
-        if autoHarvest then
-                    for y = 0, 199  do
-                        for x = x1, x1 do
-                            if isReady(GetTile(x,y)) then
-                                FindPath(x,y,50)
-                                Sleep(delayHarvest)
-                                punch(0,0)
-                                Sleep(delayHarvest)
-                            end
+    if autoHarvest then
+        while countReady() > 0 do
+            if findItem(itemID) >= 1 or findItem(itemID) == 1 then
+                for y = 0, 199  do
+                    for x = x1, x1 do
+                        if isReady(GetTile(x,y)) then
+                            FindPath(x,y,50)
+                            Sleep(delayHarvest)
+                            punch(0,0)
+                            previousGem = GetPlayerInfo().gems
+                        end
 
-                            if GetWorld() == nil then
-                                Sleep(delayRecon)
-                                reconnectPlayer()
-                                break
-                            end
+                        if GetWorld() == nil then
+                            Sleep(delayRecon)
+                            reconnectPlayer()
+                            break
                         end
                     end
+                end
+            end
+
+            if findItem(itemID) == 0 then
+                for y = 0, 199 do
+                    for x = x1, x1 do
+                        if isReady(GetTile(x,y)) then
+                            FindPath(x,y, 50)
+                            Sleep(delayHarvest)
+                            punch(0, 0)
+                            Sleep(delayHarvest)
+                            hold()
+                        end
+            
+                        if GetWorld() == nil then
+                            Sleep(1000)
+                            reconnectPlayer()
+                            break
+                        end
+                    end
+                end
+            end
         end
+    end
 end
 
-function htantimiss()
- 	harvest()
+local function harvestMiss()
     Sleep(1000)
-    previousGem = GetPlayerInfo().gems
+    harvest()
 end
 
 local function plant()
@@ -1321,10 +1356,9 @@ end
 
 local function plantantimiss()
     if autoPlant then
-        playerHook("Nambal")
         if countTree() < amtseed then
             for x = 0,199 do
-		for y = y1,y2 do
+		        for y = y1,y2 do
                     
                     if GetWorld() == nil then
                         return
@@ -1365,8 +1399,9 @@ end
 local function uws()
     if countTree() >= amtseed then
         if autoSpray then
-            Sleep(1000)
             SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+            playerHook("Using Uws & Harvest")
+            Sleep(1000)
         end
     end
 end
@@ -1432,7 +1467,7 @@ if isUserIdAllowed(userId) then
 
         remoteCheck()---
         harvest()---
-        htantimiss()---
+        harvestMiss()---
         Sleep(1000)
 
         plant()--------------------------------------------------
