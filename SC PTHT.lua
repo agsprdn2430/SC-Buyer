@@ -468,7 +468,7 @@ local function harvest()
         while countReady() > 0 do
             if findItem(itemID) >= 1 or findItem(itemID) == 1 then
                 for y = 0, 199  do
-                    for x = x1, x2 do
+                    for x = x1, x1 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y,50)
                             Sleep(delayHarvest)
@@ -487,7 +487,7 @@ local function harvest()
 
             if findItem(itemID) == 0 then
                 for y = 0, 199 do
-                    for x = x1, x2 do
+                    for x = x1, x1 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y, 50)
                             Sleep(delayHarvest)
