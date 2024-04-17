@@ -887,7 +887,7 @@ logText("Checking User ID.")
 overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
 
-load(MakeRequest("https://raw.githubusercontent.com/Rei104/BUYERID/main/ARROZ.lua","GET").content)()
+load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20COOK%20ARROZ.lua","GET").content)()
 
 function isUserIdAllowed(userid)
     for _, allowedId in ipairs(allowedUserIds) do
