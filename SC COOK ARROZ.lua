@@ -1,4 +1,4 @@
---{DON'T EDIT SCRIPT]}
+--{DON'T EDIT SCRIPT}
 function place(id,x,y)
     pkt = {}
     pkt.type = 3
