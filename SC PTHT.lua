@@ -7,6 +7,7 @@ changeRemote = false
 magplantX = magplantX - 1 
 currentTime = os.time() 
 player = GetLocal().name 
+playerUserID = GetLocal().userid
 previousGem = GetPlayerInfo().gems 
 currentWorld = GetWorld().name 
 
@@ -164,6 +165,12 @@ else
     username = removeColorAndSymbols(GetLocal().name)
 end
 
+if GetWorld() == nil then
+    playerUID = removeColorAndSymbols(playerUserID)
+else
+    playerUID = removeColorAndSymbols(GetLocal().userid)
+end
+
 local function playerHook(info)
     if whUse then
         oras = os.time() - currentTime
@@ -191,20 +198,15 @@ local function playerHook(info)
             }
 
             @{
-                name = "<:bot:1201730667281666078> Player Name"
-                value = "]].. username ..[["
+                name = "<:bot:1201730667281666078> Player Information"
+                value = "Username : **]].. username ..[[**
+                User ID : **]].. playerUID ..[[**"
                 inline = "false"
             }
   
             @{
                 name = "<:gems:1194831751193825281> Total Gems"
                 value = "Current Gems: ]].. FormatNumber(GetPlayerInfo().gems) ..[["
-                inline = "false"
-            }
-
-            @{
-                name = "<:gems:1194831751193825281> Previous Earned From The PTHT"
-                value = "Previous Earned: ]].. FormatNumber(GetPlayerInfo().gems - previousGem) ..[["
                 inline = "false"
             }
 
@@ -350,7 +352,7 @@ local function cheatSetup()
     if countTree() >= 1 then
         for _, tile in pairs(GetTiles()) do
             if tile.fg == itemID and GetTile(tile.x, tile.y).collidable then
-                FindPath(tile.x, tile.y, 60)
+                FindPath(tile.x, tile.y, 100)
                 if nowEnable then
                     Sleep(1000)
                     SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_gems|1")
@@ -368,7 +370,7 @@ local function cheatSetup()
     if countTree() == 0 then
         for _, tile in pairs(GetTiles()) do
             if tile.fg == 0 and GetTile(tile.x, tile.y).collidable then
-                FindPath(tile.x, tile.y, 60)
+                FindPath(tile.x, tile.y, 100)
                 place(5640, 0, 0)
                 if nowEnable then
                     Sleep(1000)
@@ -415,15 +417,15 @@ end
 
 local function worldNot()
     if GetWorld().name ~= (worldName:upper()) then
-        playerHook("Disconnected")
+        -- test
         for i = 1, 1 do
-            Sleep(5000)
+            Sleep(7000)
             RequestJoinWorld(worldName)
-            Sleep(5000)
+            Sleep(1000)
             cheatSetup()
         end
         Sleep(delayRecon)
-        playerHook("Reconnected")
+        playerHook("Reconnected, looks like you were recently disconnected")
     else
         Sleep(delayRecon)
         remoteCheck()
@@ -433,9 +435,9 @@ end
 local function reconnectPlayer()
     if GetWorld() == nil then
         for i = 1, 1 do
-            Sleep(5000)
+            Sleep(7000)
             RequestJoinWorld(worldName)
-            Sleep(5000)
+            Sleep(1000)
             cheatSetup()
             Sleep(1000)
             nowEnable = true
@@ -444,7 +446,7 @@ local function reconnectPlayer()
         Sleep(1000)
         remoteCheck()
 		Sleep(1000)
-        playerHook("Reconnected")
+        playerHook("Reconnected, looks like you were recently disconnected")
     else
         if GetWorld().name == (worldName:upper()) then
             Sleep(1000)
@@ -456,7 +458,7 @@ end
 
 local function wrenchMe()
     if GetWorld() == nil then
-        Sleep(1000)
+        Sleep(7000)
         reconnectPlayer()
     else
         SendPacket(2, "action|wrench\n|netid|".. GetLocal().netid)
@@ -467,13 +469,12 @@ local function harvest()
     if autoHarvest then
         while countReady() > 0 do
             if findItem(itemID) >= 1 or findItem(itemID) == 1 then
-                for y = 0, 199  do
+                for y = y1, y2  do
                     for x = x1, x1 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y,50)
                             Sleep(delayHarvest)
                             punch(0,0)
-                            previousGem = GetPlayerInfo().gems
                         end
 
                         if GetWorld() == nil then
@@ -486,7 +487,7 @@ local function harvest()
             end
 
             if findItem(itemID) == 0 then
-                for y = 0, 199 do
+                for y = y1, y2 do
                     for x = x1, x1 do
                         if isReady(GetTile(x,y)) then
                             FindPath(x,y, 50)
@@ -1359,7 +1360,7 @@ local function plantantimiss()
                         return
                     else
                         if GetTile(x, y).fg == 0 and GetTile(x, y + 1).fg == platformID then
-                            FindPath(x, y, 50)
+                            FindPath(x, y, 100)
 			    Sleep(delayPlant)
                             place(5640,0,0)
 			    Sleep(delayPlant)
@@ -1388,17 +1389,17 @@ local function plantantimiss()
                 end
             end
         end
-    end
-end
 
-local function uws()
-    if countTree() >= amtseed then
-        if autoSpray then
-            SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
-            playerHook("Using Uws & Harvest")
-            Sleep(1000)
+        if countTree() >= amtseed then
+            if autoSpray then
+                Sleep(1000)
+                SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+                playerHook("Using Uws & Harvest")
+            end
         end
     end
+    harvest()
+    Sleep(1000)
 end
 
 ChangeValue("[C] Modfly", true)
@@ -1420,7 +1421,7 @@ if isUserIdAllowed(userId) then
     logText("`2Access granted, User ID is registered.")
     while true do
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1429,7 +1430,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1461,13 +1462,11 @@ if isUserIdAllowed(userId) then
         end
 
         remoteCheck()---
-        Sleep(1000)
         harvest()---
-        Sleep(1000)
 
         plant()--------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1476,7 +1475,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1499,7 +1498,7 @@ if isUserIdAllowed(userId) then
 
         plant2()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1508,7 +1507,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1531,7 +1530,7 @@ if isUserIdAllowed(userId) then
 
         plant3()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1540,7 +1539,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1563,7 +1562,7 @@ if isUserIdAllowed(userId) then
 
         plant4()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1572,7 +1571,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1595,7 +1594,7 @@ if isUserIdAllowed(userId) then
 
         plant5()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1604,7 +1603,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1627,7 +1626,7 @@ if isUserIdAllowed(userId) then
 
         plant6()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1636,7 +1635,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1659,7 +1658,7 @@ if isUserIdAllowed(userId) then
 
         plant7()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1668,7 +1667,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1691,7 +1690,7 @@ if isUserIdAllowed(userId) then
 
         plant8()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1700,7 +1699,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1723,7 +1722,7 @@ if isUserIdAllowed(userId) then
 
         plant9()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1732,7 +1731,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1755,7 +1754,7 @@ if isUserIdAllowed(userId) then
 
         plant10()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1764,7 +1763,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1787,7 +1786,7 @@ if isUserIdAllowed(userId) then
 
         plant11()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1796,7 +1795,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1819,7 +1818,7 @@ if isUserIdAllowed(userId) then
 
         plant12()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1828,7 +1827,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1851,7 +1850,7 @@ if isUserIdAllowed(userId) then
 
         plant13()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1860,7 +1859,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1883,7 +1882,7 @@ if isUserIdAllowed(userId) then
 
         plant14()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1892,7 +1891,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1915,7 +1914,7 @@ if isUserIdAllowed(userId) then
 
         plant15()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1924,7 +1923,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1947,7 +1946,7 @@ if isUserIdAllowed(userId) then
 
         plant16()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1956,7 +1955,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -1979,7 +1978,7 @@ if isUserIdAllowed(userId) then
 
         plant17()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -1988,7 +1987,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -2011,7 +2010,7 @@ if isUserIdAllowed(userId) then
 
         plant18()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -2020,7 +2019,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -2043,7 +2042,7 @@ if isUserIdAllowed(userId) then
 
         plant19()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -2052,7 +2051,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -2075,7 +2074,7 @@ if isUserIdAllowed(userId) then
 
         plant20()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -2084,7 +2083,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -2107,7 +2106,7 @@ if isUserIdAllowed(userId) then
 
         plantantimiss()-------------------------------------------------
         if GetWorld() == nil then
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -2116,7 +2115,7 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            playerHook("Disconnected")
+            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -2136,10 +2135,6 @@ if isUserIdAllowed(userId) then
             takeMagplant()
         plantantimiss()
         end
-
-        Sleep(2000)
-        uws()
-        Sleep(4000)
     end
 
 else
