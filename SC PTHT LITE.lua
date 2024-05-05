@@ -512,41 +512,41 @@ end
 local function plant()
     if autoPlant then
       playerHook("Plant")
-               for x = x1, x2 do
-                   for y = y2, y1, -1 do    
-                    
-		            if GetWorld() == nil then
-                        return
-                    else
-                        if GetTile(x, y).fg == 0 and GetTile(x, y + 1).fg == platformID then
-                            FindPath(x, y, 50)
-			                Sleep(delayPlant)
-                            place(5640,0,0)
-			                Sleep(delayPlant)
-                        end
-                    end
+        if countTree() < amtseed then
+            for x = x1, x2 do
+                for y = y2, y1, -1 do    
+                 
+                 if GetWorld() == nil then
+                     return
+                 else
+                     if GetTile(x, y).fg == 0 and GetTile(x, y + 1).fg == platformID then
+                         FindPath(x, y, 50)
+                         Sleep(delayPlant)
+                         place(5640,0,0)
+                         Sleep(delayPlant)
+                     end
+                 end
 
-                    if GetWorld() == nil then
-                        Sleep(delayRecon)
-                        reconnectPlayer()
-                        break
-                    end
+                 if GetWorld() == nil then
+                     Sleep(delayRecon)
+                     reconnectPlayer()
+                     break
+                 end
 
-                    if changeRemote then
-                        break
-                    end
-                end
+                 if changeRemote then
+                     break
+                 end
+             end
 
-                if GetWorld() == nil then
-                    Sleep(delayRecon)
-                    reconnectPlayer()
-                    break
-                end
+             if GetWorld() == nil then
+                 Sleep(delayRecon)
+                 reconnectPlayer()
+                 break
+             end
 
-                if changeRemote then
-                    break
-                end
-            end
+             if changeRemote then
+                 break
+             end
         end
     end
 end
@@ -554,6 +554,7 @@ end
 
 local function plantantimiss()
     if autoPlant then
+        if countTree() < amtseed then
             for x = x1, x2 do
 		        for y = y1,y2 do
                     
@@ -591,10 +592,12 @@ local function plantantimiss()
             end
         end
 
-        if autoSpray then
-            Sleep(1000)
-            SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
-            playerHook("Using Uws & Harvest")
+        if countTree() >= amtseed then
+            if autoSpray then
+                Sleep(1000)
+                SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+                playerHook("Using Uws & Harvest")
+            end
         end
     end
     harvest()
@@ -666,7 +669,6 @@ if isUserIdAllowed(userId) then
         plant()--------------------------------------------------
 
         plantantimiss()-------------------------------------------------
-
     end
 
 else
