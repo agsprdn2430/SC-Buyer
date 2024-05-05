@@ -512,7 +512,6 @@ end
 local function plant()
     if autoPlant then
       playerHook("Plant")
-        if countTree() < amtseed then
                for x = x1, x2 do
                    for y = y2, y1, -1 do    
                     
@@ -555,7 +554,6 @@ end
 
 local function plantantimiss()
     if autoPlant then
-        if countTree() < amtseed then
             for x = x1, x2 do
 		        for y = y1,y2 do
                     
@@ -593,12 +591,10 @@ local function plantantimiss()
             end
         end
 
-        if countTree() >= amtseed then
-            if autoSpray then
-                Sleep(1000)
-                SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
-                playerHook("Using Uws & Harvest")
-            end
+        if autoSpray then
+            Sleep(1000)
+            SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
+            playerHook("Using Uws & Harvest")
         end
     end
     harvest()
@@ -670,36 +666,7 @@ if isUserIdAllowed(userId) then
         plant()--------------------------------------------------
 
         plantantimiss()-------------------------------------------------
-        if GetWorld() == nil then
-            -- test
-            Sleep(delayRecon)
-            reconnectPlayer()
-            Sleep(delayRecon)
-        end
 
-        if GetWorld().name == (worldName:upper()) then
-            Sleep(delayRecon)
-        else
-            -- test
-            Sleep(delayRecon)
-            worldNot()
-            Sleep(delayRecon)
-        end
-        
-        if changeRemote then
-            for i = 1, 1 do
-                magplantX = magplantX + 1
-            end
-            Sleep(100)
-            takeMagplant()
-        plantantimiss()
-        end
-
-        if findItem(5640) == 0 or findItem(5640) < 0 then
-            Sleep(100)
-            takeMagplant()
-        plantantimiss()
-        end
     end
 
 else
