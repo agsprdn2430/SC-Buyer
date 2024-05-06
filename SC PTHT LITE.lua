@@ -472,8 +472,7 @@ local function harvest()
                 for y = y1, y2  do
                     for x = x1, x1 do
                         if isReady(GetTile(x,y)) then
-                            FindPath(x, y, 50)
-                            Sleep(delayHarvest)
+                            FindPath(x, y, delayHarvest)
                             punch(0,0)
                         end
 
@@ -490,10 +489,8 @@ local function harvest()
                 for y = 0, 199 do
                     for x = x1, x1 do
                         if isReady(GetTile(x,y)) then
-                            FindPath(x, y, 50)
-                            Sleep(delayHarvest)
+                            FindPath(x, y, delayHarvest)
                             punch(0, 0)
-                            Sleep(delayHarvest)
                             hold()
                         end
             
@@ -513,49 +510,48 @@ local function plant()
     if autoPlant then
       playerHook("Plant")
         if countTree() < amtseed then
-            for x = x1, x2 do
-                for y = y2, y1, -1 do    
-                 
-                 if GetWorld() == nil then
-                     return
-                 else
-                     if GetTile(x, y).fg == 0 and GetTile(x, y + 1).fg == platformID then
-                         FindPath(x, y, 50)
-                         Sleep(delayPlant)
-                         place(5640,0,0)
-                         Sleep(delayPlant)
-                     end
-                 end
 
-                 if GetWorld() == nil then
-                     Sleep(delayRecon)
-                     reconnectPlayer()
-                     break
-                 end
+            for y = y2, y1, - 1 do  
+               for x = x1, x2, 10 do
+        
+		            if GetWorld() == nil then
+                        return
+                    else
+                        if GetTile(x, y).fg == 0 and GetTile(x, y + 1).fg == platformID then
+                            FindPath(x, y, delayPlant)
+                            place(5640,0,0)
+                        end
+                    end
 
-                 if changeRemote then
-                     break
-                 end
-             end
+                    if GetWorld() == nil then
+                        Sleep(delayRecon)
+                        reconnectPlayer()
+                        break
+                    end
 
-             if GetWorld() == nil then
-                 Sleep(delayRecon)
-                 reconnectPlayer()
-                 break
-             end
+                    if changeRemote then
+                        break
+                    end
+                end
 
-             if changeRemote then
-                 break
-             end
+                if GetWorld() == nil then
+                    Sleep(delayRecon)
+                    reconnectPlayer()
+                    break
+                end
+
+                if changeRemote then
+                    break
+                end
+            end
         end
     end
 end
 
-
 local function plantantimiss()
     if autoPlant then
         if countTree() < amtseed then
-            for x = x1, x2 do
+            for x = 0,199 do
 		        for y = y1,y2 do
                     
                     if GetWorld() == nil then
@@ -563,9 +559,9 @@ local function plantantimiss()
                     else
                         if GetTile(x, y).fg == 0 and GetTile(x, y + 1).fg == platformID then
                             FindPath(x, y, 100)
-			                Sleep(delayPlant)
+			    Sleep(delayPlant)
                             place(5640,0,0)
-			                Sleep(delayPlant)
+			    Sleep(delayPlant)
                         end
                     end
 
@@ -595,11 +591,12 @@ local function plantantimiss()
         if countTree() >= amtseed then
             if autoSpray then
                 Sleep(1000)
+                playerHook("Using Uws")
                 SendPacket(2, "action|dialog_return\ndialog_name|ultraworldspray")
-                playerHook("Using Uws & Harvest")
             end
         end
     end
+    playerHook("Harvest")
     harvest()
     Sleep(1000)
 end
@@ -623,7 +620,6 @@ if isUserIdAllowed(userId) then
     logText("`2Access granted, User ID is registered.")
     while true do
         if GetWorld() == nil then
-            -- test
             Sleep(delayRecon)
             reconnectPlayer()
             Sleep(delayRecon)
@@ -632,7 +628,6 @@ if isUserIdAllowed(userId) then
         if GetWorld().name == (worldName:upper()) then
             Sleep(delayRecon)
         else
-            -- test
             Sleep(delayRecon)
             worldNot()
             Sleep(delayRecon)
@@ -663,12 +658,10 @@ if isUserIdAllowed(userId) then
             takeMagplant()
         end
 
-        remoteCheck()---
-        harvest()---
-
-        plant()--------------------------------------------------
-
-        plantantimiss()-------------------------------------------------
+        remoteCheck()
+        harvest()
+        plant()
+        plantantimiss()
     end
 
 else
