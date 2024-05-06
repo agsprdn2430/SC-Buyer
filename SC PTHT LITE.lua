@@ -545,48 +545,6 @@ local function plant()
                 end
             end
         end
-    end
-end
-
-local function plantantimiss()
-    if autoPlant then
-        if countTree() < amtseed then
-            for x = 0,199 do
-		        for y = y1,y2 do
-                    
-                    if GetWorld() == nil then
-                        return
-                    else
-                        if GetTile(x, y).fg == 0 and GetTile(x, y + 1).fg == platformID then
-                            FindPath(x, y, 100)
-			    Sleep(delayPlant)
-                            place(5640,0,0)
-			    Sleep(delayPlant)
-                        end
-                    end
-
-                    if GetWorld() == nil then
-                        Sleep(delayRecon)
-                        reconnectPlayer()
-                        break
-                    end
-
-                    if changeRemote then
-                        break
-                    end
-                end
-
-                if GetWorld() == nil then
-                    Sleep(delayRecon)
-                    reconnectPlayer()
-                    break
-                end
-
-                if changeRemote then
-                    break
-                end
-            end
-        end
 
         if countTree() >= amtseed then
             if autoSpray then
@@ -602,7 +560,6 @@ local function plantantimiss()
 end
 
 ChangeValue("[C] Modfly", true)
-
 
 load(MakeRequest("https://raw.githubusercontent.com/agsprdn2430/UID-Buyer/main/UID%20PTHT.lua","GET").content)()
 
@@ -661,7 +618,6 @@ if isUserIdAllowed(userId) then
         remoteCheck()
         harvest()
         plant()
-        plantantimiss()
     end
 
 else
