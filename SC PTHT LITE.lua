@@ -511,7 +511,7 @@ local function plant()
       playerHook("Plant")
         if countTree() < amtseed then
 
-            for y = y1, y2 do  
+            for y = y2, y1, - 1 do  
                for x = x1, x2, 10 do
         
 		            if GetWorld() == nil then
@@ -551,7 +551,7 @@ end
 local function plantantimiss()
     if autoPlant then
         if countTree() < amtseed then
-            for y = y1, y2 do  
+            for y = y2, y1, - 1 do  
                 for x = x1, x2, 10 do
                     
                     if GetWorld() == nil then
