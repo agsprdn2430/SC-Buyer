@@ -1,3 +1,4 @@
+timer = os.time()
 starB = false
 oldMagplantX = magplantX 
 oldMagplantY = magplantY 
@@ -72,7 +73,7 @@ AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnConsoleMessage" and var[1]:find("Xenonite") then
         return true
     end
-    if var[0] == "OnConsoleMessage" and var[1]:find("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!")  then
+    if var[0] == "OnConsoleMessage" and var[1]:match("`1O`2h`3, `4l`5o`6o`7k `8w`9h`ba`!t `$y`3o`2u`4'`ev`pe `#f`6o`8u`1n`7d`w!")  then
         return true
     end
     if var[0] == "OnTalkBubble" and var[2]:match("Xenonite") then
@@ -156,10 +157,6 @@ end
 time = os.time()
 local function playerHook(info)  
     if whUse then
-        BLGL = findItem(11550)
-        BGL = findItem(7188)
-        DL = findItem(1796)
-        WL = findItem(242)
         oras = os.time() - time
         local script = [[
             $webHookUrl = "]].. whUrl ..[["
@@ -192,15 +189,6 @@ local function playerHook(info)
             }
 
             @{
-                name = "<a:igl:1194820900026073149> Lock Information"
-                value = "<:blgl:1194826207015997511> **: ]].. BLGL ..[[**
-                <:bugl:1194826224627888128> **: ]].. BGL ..[[**
-                <:dl:1222850459430162493> **: ]].. DL ..[[**
-                <:wl:1222850479533588550> **: ]].. WL ..[[**"
-                inline = "false"
-            }
-  
-            @{
                 name = "<:gems:1194831751193825281> Gems Information"
                 value = "Current Gems <:rgems:1225699132711243817>: **]].. FormatNumber(GetPlayerInfo().gems) ..[[**
                 Earned Gems <:rgems:1225699132711243817>: **]].. FormatNumber(GetPlayerInfo().gems - currentGem) ..[[**"
@@ -217,6 +205,12 @@ local function playerHook(info)
             @{
                 name = "<:mp:1194831735666511912> Magplant Position"
                 value = "Current Remote: (**]].. magplantX ..[[**, **]].. magplantY ..[[**)"
+                inline = "false"
+            }
+
+            @{
+                name = "<a:rg:1197369816403685396> PNB Up Time"
+                value = "]].. math.floor(oras/86400) ..[[ Days ]].. math.floor(oras%86400/3600) ..[[ Hours ]].. math.floor(oras%86400%3600/60) ..[[ Minutes ]].. math.floor(oras%3600%60) ..[[ Seconds"
                 inline = "false"
             }
 
@@ -278,19 +272,19 @@ local function warnText(text)
     return true
 end
 
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4rab.`6]")
 logText("Script is now running!")
 overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4rab.`6]")
 logText("Turn on API List IO,OS, Make Request.")
 overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4rab.`6]")
 logText("PNB Script by Rab Store.")
 overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
-SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4_rab`6]")
+SendPacket(2, "action|input\ntext|`6[Premium Script by `b@4Rab`6] [DC : `5@4rab.`6]")
 logText("Checking User ID.")
 overlayText("`6Premium Script by `0[Rab Store]")
 Sleep(1000)
@@ -396,28 +390,6 @@ local function reconnectPlayer()
     end
 end
 
-local function worldNot()
-    if GetWorld().name ~= (worldName:upper()) then
-        -- test
-        Sleep(delayErcon)
-        RequestJoinWorld(worldName)
-        overlayText("[Rab Store] `^Request to join world `2".. worldName.."")
-        Sleep(1000)
-        playerHook("Reconnected, looks like you were recently disconnected")
-    else
-        Sleep(1000)
-        remoteCheck()
-        if findItem(5640) >= 1 or findItem(5640) == 1 then
-            Sleep(1000)
-            if GetLocal().pos.x ~= positionX and GetLocal().pos.y ~= positionY then
-                Sleep(100)
-                FindPath(positionX, positionY, 100)
-                Sleep(100)
-            end
-        end
-    end
-end
-
 local function getPos()
     if setCurrent then
         positionX = math.floor(GetLocal().pos.x / 32)
@@ -465,7 +437,7 @@ if isUserIdAllowed(userId) then
                     magplantCount = 1
                     magplantX = oldMagplantX
                 end
-                SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0\ncheck_lonely".. peopleHide .."\ncheck_gems|".. collectGem)
+                SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0\ncheck_lonely".. peopleHide .."\ncheck_gems|".. collectGem .."\ncheck_ignoref|".. ignorePeople)
                 Sleep(1000)
             end
             getRemote()
@@ -482,23 +454,13 @@ if isUserIdAllowed(userId) then
             while nowFarm do
                 for i = 1, 1 do
                     Sleep(4500)
-                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem)
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem .."\ncheck_ignoref|".. ignorePeople)
                 end
     
                 if GetWorld() == nil then
                     -- test
                     Sleep(1000)
                     reconnectPlayer()
-                    Sleep(1000)
-                    break
-                end
-    
-                if GetWorld().name == (worldName:upper()) then
-                    Sleep(1000)
-                else
-                    -- test
-                    Sleep(1000)
-                    worldNot()
                     Sleep(1000)
                     break
                 end
@@ -517,11 +479,6 @@ if isUserIdAllowed(userId) then
                     nowFarm = true
                     autoEat = false
                 end        
-
-                if autoGhost then
-                    SendPacket(2, "action|input\ntext|/ghost")
-                    break
-                end
     
                 if nowBuy then  
                     if autoInvasion then
@@ -618,16 +575,6 @@ if isUserIdAllowed(userId) then
                     end
                 end
     
-                if GetWorld().name == (worldName:upper()) then
-                    Sleep(1000)
-                else
-                    -- test
-                    Sleep(1000)
-                    worldNot()
-                    Sleep(1000)
-                    break
-                end
-    
                 if GetWorld() == nil then
                     -- test
                     Sleep(1000)
@@ -641,7 +588,7 @@ if isUserIdAllowed(userId) then
                     break
                 end
 
-                if os.time() - time >= whDelay then
+                if os.time() - timer >= whDelay then
                     starB = true
                     if suckMode then
                         SendPacket(2, "action|wrench\n|netid|"..GetLocal().netid)
@@ -655,7 +602,7 @@ if isUserIdAllowed(userId) then
                         playerHook("Webhook PING! every ".. whDelay .." Seconds!")
                         Sleep(200)
                     end
-                    time = os.time()
+                    timer = os.time()
                     Sleep(1000)
                     starB = false
                 end
