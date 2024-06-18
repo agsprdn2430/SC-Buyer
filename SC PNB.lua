@@ -470,7 +470,7 @@ if isUserIdAllowed(userId) then
                     place(4604, 0, 0)
                     overlayText("[Rab Store] `^Auto Eat Buff")
                     logText("Added `2Arroz Con Pollo `6buff for 30 minutes (`2More Gems!`6).")
-                    Sleep(500)
+                    Sleep(1000)
                     place(528, 0, 0)
                     overlayText("[Rab Store] `^Auto Eat Buff")
                     logText("Added `2Lucky Clover `6buff for 30 minutes (`2More Lucky!`6).")
