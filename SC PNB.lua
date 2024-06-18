@@ -466,7 +466,6 @@ if isUserIdAllowed(userId) then
                 end
 
                 if autoEat == true then
-                    SendPacket(2,"action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0")
                     Sleep(500)
                     place(4604, 0, 0)
                     overlayText("[Rab Store] `^Auto Eat Buff")
