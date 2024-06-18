@@ -475,7 +475,6 @@ if isUserIdAllowed(userId) then
                     overlayText("[Rab Store] `^Auto Eat Buff")
                     logText("Added `2Lucky Clover `6buff for 30 minutes (`2More Lucky!`6).")
                     Sleep(500)
-                    nowFarm = true
                     autoEat = false
                 end        
     
