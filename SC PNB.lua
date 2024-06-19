@@ -448,19 +448,6 @@ if isUserIdAllowed(userId) then
         Sleep(1000)
         FindPath(positionX, positionY, 100)
         Sleep(1000)
-
-        if autoEat == true then
-            Sleep(500)
-            place(4604, 0, 0)
-            overlayText("[Rab Store] `^Auto Eat Buff")
-            logText("Added `2Arroz Con Pollo `6buff for 30 minutes (`2More Gems!`6).")
-            Sleep(1000)
-            place(528, 0, 0)
-            overlayText("[Rab Store] `^Auto Eat Buff")
-            logText("Added `2Lucky Clover `6buff for 30 minutes (`2More Lucky!`6).")
-            Sleep(500)
-            autoEat = false
-        end  
         
         if cheatFarm then
             nowFarm = true
@@ -477,7 +464,20 @@ if isUserIdAllowed(userId) then
                     reconnectPlayer()
                     Sleep(1000)
                     break
-                end      
+                end   
+
+                if autoEat then
+                    SendPacket(2,"action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0")
+                    Sleep(500)
+                    FindPath(positionX, positionY)
+                    Sleep(500)
+                    place(528, 0, 0)
+                    Sleep(500)
+                    place(4604, 0, 0)
+                    Sleep(500)
+                    autoEat = false
+                    nowFarm = true
+                end
     
                 if nowBuy then  
                     if autoInvasion then
