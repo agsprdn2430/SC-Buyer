@@ -45,12 +45,10 @@ AddHook("onvariant", "mommy", function(var)
     end
     if var[0] == "OnConsoleMessage" then
         if var[1]:find("`oYour luck has worn off.") then
-           autoEat = true
+           autoClover = true
         elseif var[1]:find("`oYour stomach's rumbling.") then
-           autoEat = true
+           autoArroz = true
         end
-
-        return true
     end
     if var[0] == "OnConsoleMessage" and var[1]:find("Disconnected?! Will attempt to reconnect...") then
         return true
@@ -448,13 +446,41 @@ if isUserIdAllowed(userId) then
         Sleep(1000)
         FindPath(positionX, positionY, 100)
         Sleep(1000)
-        
+
         if cheatFarm then
             nowFarm = true
             playerHook("Farming")
             while nowFarm do
+                if autoClover then
+                    Sleep(1000)
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0")
+                    Sleep(1000)
+                    FindPath(positionX, positionY)
+                    Sleep(1000)
+                    place(528, 0, 0)
+                    overlayText("`2Eating Lucky Clover, `9More Lucky!")
+                    Sleep(1000)
+                    autoClover = false
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem .."\ncheck_ignoref|".. ignorePeople)
+                    Sleep(1000)
+                end
+
+                if autoArroz then
+                    Sleep(1000)
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0")
+                    Sleep(1000)
+                    FindPath(positionX, positionY)
+                    Sleep(1000)
+                    place(4604, 0, 0)
+                    overlayText("`2Eating Arroz Con Pollo, `9More Gems!")
+                    Sleep(1000)
+                    autoArroz = false
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem .."\ncheck_ignoref|".. ignorePeople)
+                    Sleep(1000)
+                end
+
                 for i = 1, 1 do
-                    Sleep(4500)
+                    Sleep(4000)
                     SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem .."\ncheck_ignoref|".. ignorePeople)
                 end
     
@@ -464,21 +490,8 @@ if isUserIdAllowed(userId) then
                     reconnectPlayer()
                     Sleep(1000)
                     break
-                end   
-
-                if autoEat then
-                    SendPacket(2,"action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0")
-                    Sleep(500)
-                    FindPath(positionX, positionY)
-                    Sleep(500)
-                    place(528, 0, 0)
-                    Sleep(500)
-                    place(4604, 0, 0)
-                    Sleep(500)
-                    autoEat = false
-                    nowFarm = true
                 end
-    
+
                 if nowBuy then  
                     if autoInvasion then
                         if GetPlayerInfo().gems >= 10000 then
