@@ -20,6 +20,9 @@ AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnSDBroadcast" then 
         return true
     end
+    if var[0] == "OnDialogRequest" and var[1]:find("add_player_info") then
+        return true
+    end
     if var[0] == "OnDialogRequest" and var[1]:find("Telephone") then
         return true
     end
