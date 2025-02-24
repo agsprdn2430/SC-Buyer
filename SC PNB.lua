@@ -199,8 +199,9 @@ local function playerHook(info)
 
             @{
                 name = "<a:flash:1197511764603052102> Buff Information"
-                value = "<:four_leaf_clover:1178876649090076774> Clover Stock: **]].. math.floor(findItem(528)) ..[[**
-                <:taco:1178877190507614248> Arroz Stock: **]].. math.floor(findItem(4604)) ..[[**"
+                value = "<:clover:1343510787532132366> Clover Stock: **]].. math.floor(findItem(528)) ..[[**
+                <:arroz:1343510922341257236> Arroz Stock: **]].. math.floor(findItem(4604)) ..[[**
+                <:songpyeon:1343510443641147445> Songpyeon Stock: **]].. math.floor(findItem(1056)) ..[[**"
                 inline = "false"
             }
   
