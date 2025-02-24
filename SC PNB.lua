@@ -49,6 +49,7 @@ AddHook("onvariant", "mommy", function(var)
     if var[0] == "OnConsoleMessage" then
         if var[1]:find("`oYour luck has worn off.") then
            autoClover = true
+           autoSongpyeon = true
         elseif var[1]:find("`oYour stomach's rumbling.") then
            autoArroz = true
         end
@@ -478,6 +479,20 @@ if isUserIdAllowed(userId) then
                     overlayText("`2Eating Arroz Con Pollo, `9More Gems!")
                     Sleep(1000)
                     autoArroz = false
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem .."\ncheck_ignoref|".. ignorePeople)
+                    Sleep(1000)
+                end
+
+                if autoSongpyeon then
+                    Sleep(1000)
+                    SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|0\ncheck_bfg|0")
+                    Sleep(1000)
+                    FindPath(positionX, positionY)
+                    Sleep(1000)
+                    place(1056, 0, 0)
+                    overlayText("`2Eating Songpyeon, `9More Lucky!")
+                    Sleep(1000)
+                    autoSongpyeon = false
                     SendPacket(2, "action|dialog_return\ndialog_name|cheats\ncheck_autofarm|1\ncheck_bfg|1\ncheck_lonely|".. peopleHide .."\ncheck_gems|".. collectGem .."\ncheck_ignoref|".. ignorePeople)
                     Sleep(1000)
                 end
